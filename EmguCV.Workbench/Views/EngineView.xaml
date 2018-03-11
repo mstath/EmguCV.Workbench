@@ -1,0 +1,66 @@
+﻿<UserControl x:Class="EmguCV.Workbench.Views.EngineView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="clr-namespace:EmguCV.Workbench.ViewModels" 
+             mc:Ignorable="d" 
+             Height="Auto" Width="200">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <vm:EngineViewModel/>
+    </UserControl.DataContext>
+    <GroupBox Header="Image Source">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- source selector -->
+            <Grid Grid.Row="0" Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <RadioButton Grid.Column="0" HorizontalAlignment="Center" Content="Camera" IsChecked="{Binding IsCameraSource}" IsEnabled="{Binding HasCameras}"/>
+                <RadioButton Grid.Column="1" HorizontalAlignment="Center" Content="File" IsChecked="{Binding IsFileSource}"/>
+            </Grid>
+
+            <!-- source control -->
+            <StackPanel Grid.Row="1">
+                
+                <!-- camera source -->
+                <ComboBox ItemsSource="{Binding CameraNames}" SelectedIndex="{Binding CameraIndex}" Visibility="{Binding IsCameraSource, Converter={StaticResource BoolToVis}}" HorizontalContentAlignment="Center" Margin="5,0,5,5"/>
+
+                <!-- file source -->
+                <Grid Visibility="{Binding IsFileSource, Converter={StaticResource BoolToVis}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Text="{Binding SelectedFileName}" Grid.Column="0" IsReadOnly="True" TextAlignment="Center" Margin="5,0,5,5"/>
+                    <Button Command="{Binding SelectFileCommand}" Grid.Column="1" Content="..." Width="20" Margin="0,0,5,5"/>
+                </Grid>
+
+                <ToggleButton IsChecked="{Binding IsFreezeFrame}" Margin="5,0,5,5">
+                    <ToggleButton.Style>
+                        <Style TargetType="{x:Type ToggleButton}">
+                            <Setter Property="Content" Value="Freeze"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter Property="Content" Value="Resume"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ToggleButton.Style>
+                </ToggleButton>
+
+                <Button Command="{Binding SnapImageCommand}" Content="Snap to Desktop" Margin="5,0,5,5" />
+            </StackPanel>
+            
+        </Grid>
+    </GroupBox>
+</UserControl>
