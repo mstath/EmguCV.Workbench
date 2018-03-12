@@ -19,7 +19,7 @@ namespace EmguCV.Workbench.ViewModels
             Algorithms =
                 Assembly.GetExecutingAssembly()
                     .GetTypes()
-                    .Where(t => t.BaseType == typeof(ImageAlgorithm))
+                    .Where(t => typeof(IImageAlgorithm).IsAssignableFrom(t) && !t.IsAbstract)
                     .Select(Activator.CreateInstance)
                     .Select(i => i as IImageAlgorithm)
                     .ToList()

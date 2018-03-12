@@ -35,7 +35,7 @@ namespace EmguCV.Workbench.ViewModels
             _processorTypes =
                 Assembly.GetExecutingAssembly()
                     .GetTypes()
-                    .Where(t => t.BaseType == typeof(ImageProcessor))
+                    .Where(t => typeof(IImageProcessor).IsAssignableFrom(t) && !t.IsAbstract)
                     .ToDictionary(type => Regex.Replace(type.Name, @"(\B[A-Z])", " $1"));
             ProcessorNames = new List<string>(_processorTypes.Keys);
             SelectedProcessorName = ProcessorNames.First();
