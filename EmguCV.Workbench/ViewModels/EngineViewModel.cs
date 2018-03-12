@@ -82,6 +82,7 @@ namespace EmguCV.Workbench.ViewModels
                         continue;
                     }
 
+                    List<object> data = null;
                     try
                     {
                         var image = GetImage();
@@ -91,7 +92,7 @@ namespace EmguCV.Workbench.ViewModels
                         _processorVm.Process(ref image);
 
                         lock (_lock)
-                            _annotatedImage = image.Convert<Bgr, byte>();
+                            _algorithmVm.SelectedAlgorithm.Process(image, out _annotatedImage, out data);
                     }
                     catch (Exception ex)
                     {
@@ -102,6 +103,7 @@ namespace EmguCV.Workbench.ViewModels
                     {
                         _sw.Stop();
                         _imageVm.SetImage(_annotatedImage);
+                        _imageVm.Data = data;
                         _imageVm.FrameInfo = $"{_sw.ElapsedMilliseconds} ms";
                     }
                 }

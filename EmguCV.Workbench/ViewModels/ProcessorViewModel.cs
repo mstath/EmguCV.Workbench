@@ -73,8 +73,8 @@ namespace EmguCV.Workbench.ViewModels
                 Processors.RemoveAt(_selectedProcessorIndex);
         }
 
-        private List<string> _processorNames;
-        public List<string> ProcessorNames
+        private IEnumerable<string> _processorNames;
+        public IEnumerable<string> ProcessorNames
         {
             get { return _processorNames; }
             set { Set(ref _processorNames, value); }

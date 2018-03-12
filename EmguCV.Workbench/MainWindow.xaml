@@ -6,7 +6,7 @@
         xmlns:view="clr-namespace:EmguCV.Workbench.Views" 
         mc:Ignorable="d"
         Title="EmguCV.Workbench" 
-        Height="600"
+        Height="700"
         Width="880"
         ResizeMode="NoResize"
         Icon="Resources/emgucv.ico">
@@ -20,11 +20,12 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <view:EngineView x:Name="EngineView" Grid.Row="0" Margin="5"/>
             <view:ProcessorView x:Name="ProcessorView" Grid.Row="1" Margin="5,0,5,5" />
+            <view:AlgorithmView x:Name="AlgorithmView" Grid.Row="2" Margin="5,0,5,5" />
         </Grid>
 
         <view:ImageView x:Name="ImageView" Grid.Column="1" VerticalAlignment="Top" Margin="0,15,5,5"/>

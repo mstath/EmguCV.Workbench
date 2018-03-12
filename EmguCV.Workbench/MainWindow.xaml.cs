@@ -9,7 +9,7 @@ namespace EmguCV.Workbench
             InitializeComponent();
             (EngineView.DataContext as EngineViewModel)?.Initialize(
                 ProcessorView.DataContext as ProcessorViewModel,
-                null,
+                AlgorithmView.DataContext as AlgorithmViewModel, 
                 ImageView.DataContext as ImageViewModel);
         }
     }

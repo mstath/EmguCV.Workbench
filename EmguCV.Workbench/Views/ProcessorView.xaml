@@ -10,7 +10,7 @@
     <UserControl.DataContext>
         <vm:ProcessorViewModel/>
     </UserControl.DataContext>
-    <GroupBox Header="Processors">
+    <GroupBox Header="Processor">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -25,7 +25,11 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 
-                <ComboBox Grid.Column="0" ItemsSource="{Binding ProcessorNames}" SelectedValue="{Binding SelectedProcessorName}" Margin="0,0,5,0" />
+                <ComboBox Grid.Column="0"
+                          ItemsSource="{Binding ProcessorNames}" 
+                          SelectedValue="{Binding SelectedProcessorName}"
+                          HorizontalContentAlignment="Center"
+                          Margin="0,0,5,0" />
                 
                 <Button Grid.Column="1" Content="+" Width="20" Command="{Binding AddProcessorCommand}" ToolTip="Add processor" />
             </Grid>
@@ -41,6 +45,7 @@
                          ItemsSource="{Binding Processors}" 
                          DisplayMemberPath="Name" 
                          SelectedIndex="{Binding SelectedProcessorIndex}"
+                         HorizontalContentAlignment="Center"
                          Margin="0,0,5,0"
                          Height="70"/>
                 

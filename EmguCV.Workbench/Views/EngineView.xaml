@@ -33,7 +33,11 @@
             <StackPanel Grid.Row="1">
                 
                 <!-- camera source -->
-                <ComboBox ItemsSource="{Binding CameraNames}" SelectedIndex="{Binding CameraIndex}" Visibility="{Binding IsCameraSource, Converter={StaticResource BoolToVis}}" HorizontalContentAlignment="Center" Margin="5,0,5,5"/>
+                <ComboBox ItemsSource="{Binding CameraNames}" 
+                          SelectedIndex="{Binding CameraIndex}"
+                          Visibility="{Binding IsCameraSource, Converter={StaticResource BoolToVis}}" 
+                          HorizontalContentAlignment="Center"
+                          Margin="5,0,5,5"/>
 
                 <!-- file source -->
                 <Grid Visibility="{Binding IsFileSource, Converter={StaticResource BoolToVis}}">

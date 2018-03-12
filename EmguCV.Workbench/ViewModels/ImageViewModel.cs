@@ -1,4 +1,5 @@
-﻿using System.Drawing.Imaging;
+﻿using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Media.Imaging;
 using Emgu.CV;
@@ -42,6 +43,13 @@ namespace EmguCV.Workbench.ViewModels
         {
             get { return _frameInfo; }
             set { Set(ref _frameInfo, value);}
+        }
+
+        private IEnumerable<object> _data;
+        public IEnumerable<object> Data
+        {
+            get { return _data; }
+            set { Set(ref _data, value);}
         }
     }
 }
