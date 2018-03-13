@@ -94,6 +94,7 @@
     <Compile Include="Processors\Erode.cs" />
     <Compile Include="Processors\Flip.cs" />
     <Compile Include="Processors\IImageProcessor.cs" />
+    <Compile Include="Processors\Invert.cs" />
     <Compile Include="Processors\Laplace.cs" />
     <Compile Include="Processors\Morphology.cs" />
     <Compile Include="Processors\RegionOfInterest.cs" />
