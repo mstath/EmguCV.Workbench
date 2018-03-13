@@ -8,7 +8,7 @@
         Title="EmguCV.Workbench" 
         Height="700"
         Width="880"
-        ResizeMode="NoResize"
+        ResizeMode="CanMinimize"
         Icon="Resources/emgucv.ico">
     <Grid>
         <Grid.ColumnDefinitions>

@@ -95,6 +95,7 @@
     <Compile Include="Processors\IImageProcessor.cs" />
     <Compile Include="Processors\Laplace.cs" />
     <Compile Include="Processors\Morphology.cs" />
+    <Compile Include="Processors\RegionOfInterest.cs" />
     <Compile Include="Processors\Rotate.cs" />
     <Compile Include="Processors\SmoothGaussian.cs" />
     <Compile Include="Processors\Sobel.cs" />
