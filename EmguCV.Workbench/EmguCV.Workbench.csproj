@@ -74,6 +74,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Algorithms\BlobDetector.cs" />
+    <Compile Include="Algorithms\HoughLines.cs" />
     <Compile Include="Algorithms\IImageAlgorithm.cs" />
     <Compile Include="Algorithms\None.cs" />
     <Compile Include="Model\Box.cs" />
