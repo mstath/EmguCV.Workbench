@@ -49,7 +49,6 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
@@ -77,7 +76,13 @@
     <Compile Include="Algorithms\BlobDetector.cs" />
     <Compile Include="Algorithms\IImageAlgorithm.cs" />
     <Compile Include="Algorithms\None.cs" />
-    <Compile Include="DataObjects\KeyPoint.cs" />
+    <Compile Include="Model\Box.cs" />
+    <Compile Include="Model\Circle.cs" />
+    <Compile Include="Model\Contour.cs" />
+    <Compile Include="Model\KeyPoint.cs" />
+    <Compile Include="Model\RotatedBox.cs" />
+    <Compile Include="Model\Segment.cs" />
+    <Compile Include="Model\StringValue.cs" />
     <Compile Include="Processors\BinaryThreshold.cs" />
     <Compile Include="Processors\Canny.cs" />
     <Compile Include="Processors\Denoise.cs" />

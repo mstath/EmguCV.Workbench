@@ -1,18 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.Composition;
 using System.Drawing;
 using System.Linq;
 using Emgu.CV;
 using Emgu.CV.Features2D;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
-using EmguCV.Workbench.DataObjects;
+using EmguCV.Workbench.Model;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Algorithms
 {
-    [Export(typeof(IImageAlgorithm))]
     public class BlobDetector : ImageAlgorithm
     {
         public override int Order => 5;
