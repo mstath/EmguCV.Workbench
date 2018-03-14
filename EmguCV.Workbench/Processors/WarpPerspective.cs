@@ -8,16 +8,18 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Processors
 {
-    public class WarpAffine : ImageProcessor
+    class WarpPerspective : ImageProcessor
     {
-        public WarpAffine()
+        public WarpPerspective()
         {
             P1X = 0;
             P1Y = 0;
             P2X = 640;
             P2Y = 0;
-            P3X = 0;
+            P3X = 640;
             P3Y = 480;
+            P4X = 0;
+            P4Y = 480;
             Width = 640;
             Height = 480;
             InterpolationType = Inter.Nearest;
@@ -78,8 +80,8 @@ namespace EmguCV.Workbench.Processors
         [Category("Warp Affine")]
         [PropertyOrder(4)]
         [DisplayName(@"P3X")]
-        [Description(@"The X coordinate of the lower left corner.")]
-        [DefaultValue(0f)]
+        [Description(@"The X coordinate of the lower right corner.")]
+        [DefaultValue(640f)]
         public float P3X
         {
             get { return _p3X; }
@@ -90,7 +92,7 @@ namespace EmguCV.Workbench.Processors
         [Category("Warp Affine")]
         [PropertyOrder(5)]
         [DisplayName(@"P3Y")]
-        [Description(@"The Y coordinate of the lower left corner.")]
+        [Description(@"The Y coordinate of the lower right corner.")]
         [DefaultValue(480f)]
         public float P3Y
         {
@@ -98,9 +100,33 @@ namespace EmguCV.Workbench.Processors
             set { Set(ref _p3Y, value); }
         }
 
-        private int _width;
+        private float _p4X;
         [Category("Warp Affine")]
         [PropertyOrder(6)]
+        [DisplayName(@"P4X")]
+        [Description(@"The X coordinate of the lower left corner.")]
+        [DefaultValue(0f)]
+        public float P4X
+        {
+            get { return _p4X; }
+            set { Set(ref _p4X, value); }
+        }
+
+        private float _p4Y;
+        [Category("Warp Affine")]
+        [PropertyOrder(7)]
+        [DisplayName(@"P4Y")]
+        [Description(@"The Y coordinate of the lower left corner.")]
+        [DefaultValue(480f)]
+        public float P4Y
+        {
+            get { return _p4Y; }
+            set { Set(ref _p4Y, value); }
+        }
+
+        private int _width;
+        [Category("Warp Affine")]
+        [PropertyOrder(8)]
         [DisplayName(@"Width")]
         [Description(@"The width of the resulting image.")]
         [DefaultValue(640)]
@@ -112,7 +138,7 @@ namespace EmguCV.Workbench.Processors
 
         private int _height;
         [Category("Warp Affine")]
-        [PropertyOrder(7)]
+        [PropertyOrder(9)]
         [DisplayName(@"Height")]
         [Description(@"The height of the resulting image.")]
         [DefaultValue(480)]
@@ -124,7 +150,7 @@ namespace EmguCV.Workbench.Processors
 
         private Inter _interpolationType;
         [Category("Warp Affine")]
-        [PropertyOrder(8)]
+        [PropertyOrder(10)]
         [DisplayName(@"Interpolation Type")]
         [DefaultValue(Inter.Nearest)]
         public Inter InterpolationType
@@ -135,7 +161,7 @@ namespace EmguCV.Workbench.Processors
 
         private Warp _warpType;
         [Category("Warp Affine")]
-        [PropertyOrder(9)]
+        [PropertyOrder(11)]
         [DisplayName(@"Warp Type")]
         [DefaultValue(Warp.Default)]
         public Warp WarpType
@@ -146,7 +172,7 @@ namespace EmguCV.Workbench.Processors
 
         private BordType _borderType;
         [Category("Warp Affine")]
-        [PropertyOrder(10)]
+        [PropertyOrder(12)]
         [DisplayName(@"Border Type")]
         [Description(@"Pixel extrapolation method.")]
         [DefaultValue(BordType.Constant)]
@@ -158,7 +184,7 @@ namespace EmguCV.Workbench.Processors
 
         private byte _backgroundColor;
         [Category("Warp Affine")]
-        [PropertyOrder(11)]
+        [PropertyOrder(13)]
         [DisplayName(@"Background Color")]
         [Description(@"A value used to fill outliers.")]
         public byte BackgroundColor
@@ -169,19 +195,32 @@ namespace EmguCV.Workbench.Processors
 
         public override void Process(ref Image<Gray, byte> image)
         {
-            var src = new[] {new PointF(0, 0), new PointF(image.Width, 0), new PointF(0, image.Height)};
-            var dst = new[] {new PointF(_p1X, _p1Y), new PointF(_p2X, _p2Y), new PointF(_p3X, _p3Y)};
-
-            using (var mat = CvInvoke.GetAffineTransform(src, dst))
+            var src = new[]
             {
-                image = image.WarpAffine(
+                new PointF(0, 0),
+                new PointF(image.Width, 0),
+                new PointF(image.Width, image.Height),
+                new PointF(0, image.Height)
+            };
+            var dst = new[]
+            {
+                new PointF(_p1X, _p1Y),
+                new PointF(_p2X, _p2Y),
+                new PointF(_p3X, _p3Y),
+                new PointF(_p4X, _p4Y)
+            };
+
+            using (var mat = CvInvoke.GetPerspectiveTransform(src, dst))
+            {
+                CvInvoke.WarpPerspective(
+                    image,
+                    image,
                     mat,
-                    _width,
-                    _height,
+                    new Size(_width, _height),
                     _interpolationType,
                     _warpType,
                     (BorderType) _borderType,
-                    new Gray(_backgroundColor));
+                    new Gray(_backgroundColor).MCvScalar);
             }
         }
     }

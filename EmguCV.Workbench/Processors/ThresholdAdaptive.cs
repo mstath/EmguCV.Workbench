@@ -7,12 +7,6 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Processors
 {
-    public enum ThreshType
-    {
-        Binary = ThresholdType.Binary,
-        BinaryInv = ThresholdType.BinaryInv
-    }
-
     public class ThresholdAdaptive : ImageProcessor
     {
         public ThresholdAdaptive()
