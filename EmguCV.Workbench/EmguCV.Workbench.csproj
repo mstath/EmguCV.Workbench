@@ -85,6 +85,8 @@
     <Compile Include="Model\RotatedBox.cs" />
     <Compile Include="Model\Segment.cs" />
     <Compile Include="Model\StringValue.cs" />
+    <Compile Include="Processors\AbsDiff.cs" />
+    <Compile Include="Processors\And.cs" />
     <Compile Include="Processors\BinaryThreshold.cs" />
     <Compile Include="Processors\Canny.cs" />
     <Compile Include="Processors\Denoise.cs" />
@@ -94,9 +96,12 @@
     <Compile Include="Processors\Erode.cs" />
     <Compile Include="Processors\Flip.cs" />
     <Compile Include="Processors\IImageProcessor.cs" />
-    <Compile Include="Processors\Invert.cs" />
+    <Compile Include="Processors\InRange.cs" />
+    <Compile Include="Processors\Not.cs" />
     <Compile Include="Processors\Laplace.cs" />
+    <Compile Include="Processors\MinMax.cs" />
     <Compile Include="Processors\Morphology.cs" />
+    <Compile Include="Processors\Or.cs" />
     <Compile Include="Processors\RegionOfInterest.cs" />
     <Compile Include="Processors\Rotate.cs" />
     <Compile Include="Processors\SmoothGaussian.cs" />
