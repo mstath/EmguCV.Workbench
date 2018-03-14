@@ -78,6 +78,7 @@
     <Compile Include="Algorithms\HoughLines.cs" />
     <Compile Include="Algorithms\IImageAlgorithm.cs" />
     <Compile Include="Algorithms\None.cs" />
+    <Compile Include="Processors\GaussianPyramid .cs" />
     <Compile Include="Processors\WarpPerspective.cs" />
     <Compile Include="Util\Enums.cs" />
     <Compile Include="Processors\WarpAffine.cs" />
