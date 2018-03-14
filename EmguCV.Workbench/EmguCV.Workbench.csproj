@@ -87,7 +87,9 @@
     <Compile Include="Model\StringValue.cs" />
     <Compile Include="Processors\AbsDiff.cs" />
     <Compile Include="Processors\And.cs" />
-    <Compile Include="Processors\BinaryThreshold.cs" />
+    <Compile Include="Processors\Xor.cs" />
+    <Compile Include="Processors\ThresholdAdaptive.cs" />
+    <Compile Include="Processors\ThresholdBinary.cs" />
     <Compile Include="Processors\Canny.cs" />
     <Compile Include="Processors\Denoise.cs" />
     <Compile Include="Processors\Derivitive.cs" />
@@ -109,6 +111,9 @@
     <Compile Include="Processors\SmoothGaussian.cs" />
     <Compile Include="Processors\SmoothMedian.cs" />
     <Compile Include="Processors\Sobel.cs" />
+    <Compile Include="Processors\AddSubtract.cs" />
+    <Compile Include="Processors\ThresholdToZero.cs" />
+    <Compile Include="Processors\ThresholdTrunc.cs" />
     <Compile Include="Util\Extensions.cs" />
     <Compile Include="Util\RelayCommand.cs" />
     <Compile Include="Util\ViewModelBase.cs" />
