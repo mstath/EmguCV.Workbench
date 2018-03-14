@@ -78,6 +78,7 @@
     <Compile Include="Algorithms\HoughLines.cs" />
     <Compile Include="Algorithms\IImageAlgorithm.cs" />
     <Compile Include="Algorithms\None.cs" />
+    <Compile Include="Processors\WarpAffine.cs" />
     <Compile Include="Model\Box.cs" />
     <Compile Include="Model\Circle.cs" />
     <Compile Include="Model\Contour.cs" />
