@@ -104,7 +104,10 @@
     <Compile Include="Processors\Or.cs" />
     <Compile Include="Processors\RegionOfInterest.cs" />
     <Compile Include="Processors\Rotate.cs" />
+    <Compile Include="Processors\SmoothBilatral.cs" />
+    <Compile Include="Processors\SmoothBlur.cs" />
     <Compile Include="Processors\SmoothGaussian.cs" />
+    <Compile Include="Processors\SmoothMedian.cs" />
     <Compile Include="Processors\Sobel.cs" />
     <Compile Include="Util\Extensions.cs" />
     <Compile Include="Util\RelayCommand.cs" />
