@@ -15,7 +15,7 @@ namespace EmguCV.Workbench.ViewModels
 {
     public class ProcessorViewModel : ViewModelBase
     {
-        private readonly Dictionary<string, Type> _processorTypes;
+        private readonly SortedList<string, Type> _processorTypes;
 
         public RelayCommand AddProcessorCommand { get; set; }
         public RelayCommand MoveProcessorUpCommand { get; set; }
@@ -32,11 +32,11 @@ namespace EmguCV.Workbench.ViewModels
             MoveProcessorDownCommand = new RelayCommand(DoMoveProcessorDown);
             RemoveProcessorCommand = new RelayCommand(DoRemoveProcessor);
 
-            _processorTypes =
-                Assembly.GetExecutingAssembly()
-                    .GetTypes()
-                    .Where(t => typeof(IImageProcessor).IsAssignableFrom(t) && !t.IsAbstract)
-                    .ToDictionary(type => Regex.Replace(type.Name, @"(\B[A-Z])", " $1"));
+            var list = new SortedList<string, Type>();
+            foreach (var type in Assembly.GetExecutingAssembly().GetTypes().Where(t => typeof(IImageProcessor).IsAssignableFrom(t) && !t.IsAbstract))
+                list.Add(Regex.Replace(type.Name, @"(\B[A-Z])", " $1"), type);
+            _processorTypes = list;
+
             ProcessorNames = new List<string>(_processorTypes.Keys);
             SelectedProcessorName = ProcessorNames.First();
             Processors = new ObservableCollection<IImageProcessor>();
