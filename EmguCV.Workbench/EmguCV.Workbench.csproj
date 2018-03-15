@@ -74,6 +74,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Algorithms\BlobDetector.cs" />
+    <Compile Include="Algorithms\FindContours.cs" />
     <Compile Include="Algorithms\HoughCircles.cs" />
     <Compile Include="Algorithms\HoughLines.cs" />
     <Compile Include="Algorithms\IImageAlgorithm.cs" />
