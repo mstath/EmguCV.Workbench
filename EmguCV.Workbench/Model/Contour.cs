@@ -1,15 +1,21 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
 
 namespace EmguCV.Workbench.Model
 {
     public class Contour
     {
-        private readonly Point[] _pixel;
+        private readonly PointF[] _pixel;
+
+        public Contour(PointF[] pixel)
+        {
+            _pixel = pixel;
+        }
 
         public Contour(Point[] pixel)
         {
-            _pixel = pixel;
+            _pixel = pixel.Select(p => new PointF(p.X, p.Y)).ToArray();
         }
 
         public int Count => _pixel.Length;
@@ -23,18 +29,25 @@ namespace EmguCV.Workbench.Model
         {
             var length = 0.0;
 
-            if (_pixel.Length > 1)
-                for (var i = 1; i < _pixel.Length; i++)
-                    length +=
-                        Math.Sqrt(Math.Pow(_pixel[i].X - _pixel[i - 1].X, 2) +
-                                  Math.Pow(_pixel[i].Y - _pixel[i - 1].Y, 2));
+            if (_pixel.Length < 2)
+                return length;
+
+            for (var i = 1; i < _pixel.Length; i++)
+                length +=
+                    Math.Sqrt(Math.Pow(_pixel[i].X - _pixel[i - 1].X, 2) +
+                              Math.Pow(_pixel[i].Y - _pixel[i - 1].Y, 2));
 
             return length;
         }
 
-        public Point[] GetContour()
+        public PointF[] GetContourF()
         {
             return _pixel;
+        }
+
+        public Point[] GetContour()
+        {
+            return _pixel.Select(Point.Round).ToArray();
         }
     }
 }
