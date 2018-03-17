@@ -104,6 +104,7 @@ namespace EmguCV.Workbench.ViewModels
                         _sw.Stop();
                         _imageVm.SetImage(_annotatedImage);
                         _imageVm.Data = data;
+                        _imageVm.FrameSize = $"{_annotatedImage.Width} x {_annotatedImage.Height}";
                         _imageVm.FrameInfo = $"{_sw.ElapsedMilliseconds} ms";
                     }
                 }

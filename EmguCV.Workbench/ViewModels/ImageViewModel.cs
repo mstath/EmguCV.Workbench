@@ -45,6 +45,13 @@ namespace EmguCV.Workbench.ViewModels
             set { Set(ref _frameInfo, value);}
         }
 
+        private string _frameSize;
+        public string FrameSize
+        {
+            get { return _frameSize; }
+            set { Set(ref _frameSize, value); }
+        }
+
         private IEnumerable<object> _data;
         public IEnumerable<object> Data
         {
