@@ -74,12 +74,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Algorithms\BlobDetector.cs" />
+    <Compile Include="Algorithms\CameraCalibration.cs" />
     <Compile Include="Algorithms\FindContours.cs" />
     <Compile Include="Algorithms\HoughCircles.cs" />
     <Compile Include="Algorithms\HoughLines.cs" />
     <Compile Include="Algorithms\IImageAlgorithm.cs" />
     <Compile Include="Algorithms\None.cs" />
     <Compile Include="Processors\GaussianPyramid .cs" />
+    <Compile Include="Processors\Undistort.cs" />
     <Compile Include="Processors\WarpPerspective.cs" />
     <Compile Include="Util\Enums.cs" />
     <Compile Include="Processors\WarpAffine.cs" />
@@ -197,6 +199,11 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\emgucv.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\distorted chessboard.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\EMGU.CV.3.3.0.2824\build\Emgu.CV.targets" Condition="Exists('..\packages\EMGU.CV.3.3.0.2824\build\Emgu.CV.targets')" />

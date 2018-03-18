@@ -18,4 +18,10 @@ namespace EmguCV.Workbench.Util
         Default = BorderType.Default,
         Transparent = BorderType.Constant,
     }
+
+    public enum CalibTargetType
+    {
+        ChessBoard,
+        CirclesGrid
+    }
 }
