@@ -38,18 +38,18 @@ namespace EmguCV.Workbench.ViewModels
             set { Set(ref _image, value); }
         }
 
-        private string _frameInfo;
-        public string FrameInfo
+        private string _frameTimeStatus;
+        public string FrameTimeStatus
         {
-            get { return _frameInfo; }
-            set { Set(ref _frameInfo, value);}
+            get { return _frameTimeStatus; }
+            set { Set(ref _frameTimeStatus, value);}
         }
 
-        private string _frameSize;
-        public string FrameSize
+        private string _frameSizeStatus;
+        public string FrameSizeStatus
         {
-            get { return _frameSize; }
-            set { Set(ref _frameSize, value); }
+            get { return _frameSizeStatus; }
+            set { Set(ref _frameSizeStatus, value); }
         }
 
         private IEnumerable<object> _data;

@@ -19,8 +19,8 @@
         <!-- image -->
         <Canvas Name="ImageCanvas" Grid.Row="0" Width="640" Height="480">
             <Image Source="{Binding Image}" Width="{Binding Width, ElementName=ImageCanvas}" Height="{Binding Height, ElementName=ImageCanvas}" />
-            <TextBlock Canvas.Left="5" Canvas.Bottom="3" FontSize="12" Foreground="Red" Text="{Binding FrameSize}" />
-            <TextBlock Canvas.Right="5" Canvas.Bottom="3" FontSize="12" Foreground="Red" Text="{Binding FrameInfo}" />
+            <TextBlock Canvas.Left="5" Canvas.Bottom="3" FontSize="12" Foreground="Red" Text="{Binding FrameSizeStatus}" />
+            <TextBlock Canvas.Right="5" Canvas.Bottom="3" FontSize="12" Foreground="Red" Text="{Binding FrameTimeStatus}" />
         </Canvas>
 
         <!-- data -->
