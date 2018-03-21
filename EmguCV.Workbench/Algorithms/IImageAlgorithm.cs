@@ -16,6 +16,13 @@ namespace EmguCV.Workbench.Algorithms
         void Process(Image<Gray, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data);
     }
 
+    public interface IImageTemplateAlgorithm : IImageAlgorithm
+    {
+        Image<Gray, byte> Template { get; }
+
+        void SetTemplate(Image<Gray, byte> template);
+    }
+
     public abstract class ImageAlgorithm : ViewModelBase, IImageAlgorithm
     {
         [Browsable(false)]
@@ -29,6 +36,17 @@ namespace EmguCV.Workbench.Algorithms
         {
             annotatedImage = image.Convert<Bgr, byte>();
             data = null;
+        }
+    }
+
+    public abstract class ImageTemplateAlgorithm : ImageAlgorithm, IImageTemplateAlgorithm
+    {
+        [Browsable(false)]
+        public Image<Gray, byte> Template { get; protected set; }
+
+        public virtual void SetTemplate(Image<Gray, byte> template)
+        {
+            Template = template;
         }
     }
 }

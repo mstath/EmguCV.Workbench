@@ -24,8 +24,12 @@ namespace EmguCV.Workbench.ViewModels
         private string _imageFile;
         private const int SleepTime = 100;
         private readonly Stopwatch _sw;
-        private Image<Bgr, byte> _annotatedImage;
         private readonly object _lock = new object();
+
+        private Image<Gray, byte> _image;
+        public Image<Gray, byte> Image => _image;
+        private Image<Bgr, byte> _annotatedImage;
+        public Image<Bgr, byte> AnnotatedImage => _annotatedImage;
 
         public RelayCommand SelectFileCommand { get; set; }
         public RelayCommand SnapImageCommand { get; set; }
@@ -85,14 +89,14 @@ namespace EmguCV.Workbench.ViewModels
                     List<object> data = null;
                     try
                     {
-                        var image = GetImage();
+                        _image = GetImage();
 
                         _sw.Restart();
 
-                        _processorVm.Process(ref image);
+                        _processorVm.Process(ref _image);
 
                         lock (_lock)
-                            _algorithmVm.SelectedAlgorithm.Process(image, out _annotatedImage, out data);
+                            _algorithmVm.SelectedAlgorithm.Process(_image, out _annotatedImage, out data);
                     }
                     catch (Exception ex)
                     {

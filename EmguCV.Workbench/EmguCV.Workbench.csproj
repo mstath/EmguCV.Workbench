@@ -80,6 +80,7 @@
     <Compile Include="Algorithms\HoughLines.cs" />
     <Compile Include="Algorithms\IImageAlgorithm.cs" />
     <Compile Include="Algorithms\None.cs" />
+    <Compile Include="Algorithms\TemplateMatch.cs" />
     <Compile Include="Processors\GaussianPyramid .cs" />
     <Compile Include="Processors\Undistort.cs" />
     <Compile Include="Processors\WarpPerspective.cs" />
