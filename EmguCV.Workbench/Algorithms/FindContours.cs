@@ -15,13 +15,15 @@ namespace EmguCV.Workbench.Algorithms
     {
         public override int Order => 10;
 
-        public override void Process(ref Image<Bgr, byte> image, out List<object> data)
+        public override void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
         {
+            base.Process(image, out annotatedImage, out data);
+
             using (var contours = new VectorOfVectorOfPoint())
             {
                 CvInvoke.FindContours(image.Convert<Gray, byte>(), contours, null, _mode, _method);
 
-                image.DrawPolyline(contours.ToArrayOfArray(), false, new Bgr(Color.Red));
+                annotatedImage.DrawPolyline(contours.ToArrayOfArray(), false, new Bgr(Color.Red));
 
                 data = contours.ToArrayOfArray().Select(c => new Contour(c)).Cast<object>().ToList();
             }

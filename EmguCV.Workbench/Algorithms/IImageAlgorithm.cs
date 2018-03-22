@@ -13,7 +13,7 @@ namespace EmguCV.Workbench.Algorithms
 
         int Order { get; }
 
-        void Process(ref Image<Bgr, byte> image, out List<object> data);
+        void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data);
     }
 
     public interface IImageTemplateAlgorithm : IImageAlgorithm
@@ -31,9 +31,10 @@ namespace EmguCV.Workbench.Algorithms
         [Browsable(false)]
         public abstract int Order { get; }
 
-        public virtual void Process(ref Image<Bgr, byte> image, out List<object> data)
+        public virtual void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
         {
             data = null;
+            annotatedImage = image.Clone();
         }
     }
 

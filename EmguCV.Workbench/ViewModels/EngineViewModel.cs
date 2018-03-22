@@ -28,6 +28,7 @@ namespace EmguCV.Workbench.ViewModels
 
         private Image<Bgr, byte> _image;
         public Image<Bgr, byte> Image => _image;
+        private Image<Bgr, byte> _annotatedImage;
 
         public RelayCommand SelectFileCommand { get; set; }
         public RelayCommand SnapImageCommand { get; set; }
@@ -94,19 +95,19 @@ namespace EmguCV.Workbench.ViewModels
                         _processorVm.Process(ref _image);
 
                         lock (_lock)
-                            _algorithmVm.SelectedAlgorithm.Process(ref _image, out data);
+                            _algorithmVm.SelectedAlgorithm.Process(_image, out _annotatedImage, out data);
                     }
                     catch (Exception ex)
                     {
                         lock (_lock)
-                            _image = GetExceptionImage(ex);
+                            _annotatedImage = GetExceptionImage(ex);
                     }
                     finally
                     {
                         _sw.Stop();
-                        _imageVm.SetImage(_image);
+                        _imageVm.SetImage(_annotatedImage);
                         _imageVm.Data = data;
-                        _imageVm.FrameSizeStatus = $"{_image.Width} x {_image.Height}";
+                        _imageVm.FrameSizeStatus = $"{_annotatedImage.Width} x {_annotatedImage.Height}";
                         _imageVm.FrameTimeStatus = $"{_sw.ElapsedMilliseconds} ms";
                     }
                 }
@@ -204,14 +205,11 @@ namespace EmguCV.Workbench.ViewModels
 
         private void DoSnapImage()
         {
-            if (_image != null)
+            lock (_lock)
             {
-                lock (_lock)
-                {
-                    var dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-                    var file = DateTime.Now.ToString("yyyy.MM.dd.HH.mm.ss") + ".png";
-                    _image.Save(Path.Combine(dir, file));
-                }
+                var dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                var file = DateTime.Now.ToString("yyyy.MM.dd.HH.mm.ss") + ".png";
+                _annotatedImage?.Save(Path.Combine(dir, file));
             }
         }
     }

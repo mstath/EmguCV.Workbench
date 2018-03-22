@@ -13,20 +13,24 @@ namespace EmguCV.Workbench.Algorithms
     {
         public override int Order => 6;
 
-        public override void Process(ref Image<Bgr, byte> image, out List<object> data)
+        public override void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
         {
-            var lines = image.Convert<Gray, byte>().HoughLines(
-                _cannyThreshold,
-                _cannyThresholdLinking,
-                _rhoResolution,
-                _thetaResolution*Math.PI/180,
-                _threshold,
-                _minLineWidth,
-                _gapBetweenLines);
+            base.Process(image, out annotatedImage, out data);
+
+            var lines = image
+                .Convert<Gray, byte>()
+                .HoughLines(
+                    _cannyThreshold,
+                    _cannyThresholdLinking,
+                    _rhoResolution,
+                    _thetaResolution*Math.PI/180,
+                    _threshold,
+                    _minLineWidth,
+                    _gapBetweenLines);
             data = new List<object>();
             foreach (var line in lines[0])
             {
-                image.Draw(line, new Bgr(Color.Red), 1);
+                annotatedImage.Draw(line, new Bgr(Color.Red), 1);
                 data.Add(new Segment(line));
             }
         }

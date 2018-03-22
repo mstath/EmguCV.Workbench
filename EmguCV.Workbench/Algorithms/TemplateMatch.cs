@@ -13,9 +13,9 @@ namespace EmguCV.Workbench.Algorithms
     {
         public override int Order => 30;
 
-        public override void Process(ref Image<Bgr, byte> image, out List<object> data)
+        public override void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
         {
-            data = null;
+            base.Process(image, out annotatedImage, out data);
 
             if (Template == null)
                 return;
@@ -24,7 +24,7 @@ namespace EmguCV.Workbench.Algorithms
 
             if (_viewResult)
             {
-                image = result.Convert<Bgr, byte>();
+                annotatedImage = result.Convert<Bgr, byte>();
                 return;
             }
 
@@ -34,7 +34,7 @@ namespace EmguCV.Workbench.Algorithms
             Response = maxValues[0];
 
             var rect = new Rectangle(maxLocations[0], Template.Size);
-            image.Draw(rect, new Bgr(Color.Red));
+            annotatedImage.Draw(rect, new Bgr(Color.Red));
             data = new List<object> {new Box(rect)};
         }
 

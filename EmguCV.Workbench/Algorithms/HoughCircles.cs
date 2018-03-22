@@ -12,21 +12,23 @@ namespace EmguCV.Workbench.Algorithms
     {
         public override int Order => 7;
 
-        public override void Process(ref Image<Bgr, byte> image, out List<object> data)
+        public override void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
         {
-            base.Process(ref image, out data);
+            base.Process(image, out annotatedImage, out data);
 
-            var circles = image.Convert<Gray, byte>().HoughCircles(
-                new Gray(_cannyThreshold),
-                new Gray(_accumulatorThreshold),
-                _dp,
-                _minDist,
-                _minRadius,
-                _maxRadius);
+            var circles = image
+                .Convert<Gray, byte>()
+                .HoughCircles(
+                    new Gray(_cannyThreshold),
+                    new Gray(_accumulatorThreshold),
+                    _dp,
+                    _minDist,
+                    _minRadius,
+                    _maxRadius);
             data = new List<object>();
             foreach (var circle in circles[0])
             {
-                image.Draw(circle, new Bgr(Color.Red));
+                annotatedImage.Draw(circle, new Bgr(Color.Red));
                 data.Add(new Circle(circle));
             }
         }

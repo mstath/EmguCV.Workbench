@@ -22,9 +22,9 @@ namespace EmguCV.Workbench.Algorithms
 
         private Task _calTask;
 
-        public override void Process(ref Image<Bgr, byte> image, out List<object> data)
+        public override void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
         {
-            data = null;
+            base.Process(image, out annotatedImage, out data);
 
             if (_performCal && _calTask?.Status != TaskStatus.Running)
             {
@@ -33,16 +33,16 @@ namespace EmguCV.Workbench.Algorithms
             }
 
             if (_find)
-                FindCorners(ref image, new VectorOfPointF());
+                FindCorners(image, ref annotatedImage, new VectorOfPointF());
 
             if (_snap)
-                SnapCalibrate(ref image);
+                SnapCalibrate(image, ref annotatedImage);
 
             if (_undistort)
             {
                 var undistoredImage = image.Clone();
                 CvInvoke.Undistort(image, undistoredImage, _cameraMatrix, _distCoeffs);
-                image = undistoredImage;
+                annotatedImage = undistoredImage;
             }
         }
 
@@ -58,7 +58,7 @@ namespace EmguCV.Workbench.Algorithms
             PerformCal = false;
         }
 
-        private bool FindCorners(ref Image<Bgr, byte> image, VectorOfPointF corners)
+        private bool FindCorners(Image<Bgr, byte> image, ref Image<Bgr, byte> annotatedImage, VectorOfPointF corners)
         {
             var found = false;
             using (var det = new SimpleBlobDetector())
@@ -77,7 +77,7 @@ namespace EmguCV.Workbench.Algorithms
                         found = CvInvoke.FindCirclesGrid(image, size, corners, _circlesGridType, det);
                         break;
                 }
-                CvInvoke.DrawChessboardCorners(image, size, corners, found);
+                CvInvoke.DrawChessboardCorners(annotatedImage, size, corners, found);
                 return found;
             }
         }
@@ -89,7 +89,7 @@ namespace EmguCV.Workbench.Algorithms
         private Mat _rvecs;
         private Mat _tvecs;
 
-        private void SnapCalibrate(ref Image<Bgr, byte> image)
+        private void SnapCalibrate(Image<Bgr, byte> image, ref Image<Bgr, byte> annotatedImage)
         {
             try
             {
@@ -108,11 +108,11 @@ namespace EmguCV.Workbench.Algorithms
 
                 // find corners/circles
                 var corners = new VectorOfPointF();
-                var found = FindCorners(ref image, corners);
+                var found = FindCorners(image, ref annotatedImage, corners);
                 if (!found) return;
 
                 // flash outpout image
-                image = image.Not();
+                annotatedImage = annotatedImage.Not();
 
                 // add corners to image points vector
                 _imagePoints.Push(corners);
