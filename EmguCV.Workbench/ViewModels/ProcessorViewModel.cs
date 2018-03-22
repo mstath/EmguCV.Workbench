@@ -42,7 +42,7 @@ namespace EmguCV.Workbench.ViewModels
             Processors = new ObservableCollection<IImageProcessor>();
         }
 
-        public void Process(ref Image<Gray, byte> image)
+        public void Process(ref Image<Bgr, byte> image)
         {
             foreach (var processor in Processors)
                 processor.Process(ref image);

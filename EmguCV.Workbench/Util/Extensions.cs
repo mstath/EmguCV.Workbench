@@ -28,5 +28,10 @@ namespace EmguCV.Workbench.Util
             if (newVal.CompareTo(max) > 0) return max;
             return newVal;
         }
+
+        public static System.Drawing.Color Color(this System.Windows.Media.Color color)
+        {
+            return System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
+        }
     }
 }

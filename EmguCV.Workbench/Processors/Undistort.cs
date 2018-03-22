@@ -55,7 +55,7 @@ namespace EmguCV.Workbench.Processors
             set { Set(ref _parametersLoaded, value); }
         }
 
-        public override void Process(ref Image<Gray, byte> image)
+        public override void Process(ref Image<Bgr, byte> image)
         {
             if (!_parametersLoaded) return;
 

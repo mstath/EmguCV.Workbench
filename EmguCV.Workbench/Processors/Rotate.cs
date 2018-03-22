@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Windows.Media;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using EmguCV.Workbench.Util;
@@ -8,18 +9,11 @@ namespace EmguCV.Workbench.Processors
 {
     public class Rotate : ImageProcessor
     {
-        public Rotate()
-        {
-            Angle = 0;
-            Crop = false;
-        }
-
         private double _angle;
         [Category("Rotate")]
         [PropertyOrder(0)]
         [DisplayName(@"Angle")]
         [Description(@"The angle of rotation in degrees.")]
-        [DefaultValue(0.0)]
         public double Angle
         {
             get { return _angle; }
@@ -31,16 +25,26 @@ namespace EmguCV.Workbench.Processors
         [PropertyOrder(1)]
         [DisplayName(@"Crop")]
         [Description(@"If set to true the image is cropped to its original size. If set to false all rotation information is preserved.")]
-        [DefaultValue(false)]
         public bool Crop
         {
             get { return _crop; }
             set { Set(ref _crop, value); }
         }
 
-        public override void Process(ref Image<Gray, byte> image)
+        private Color _background = Colors.Black;
+        [Category("Rotate")]
+        [PropertyOrder(2)]
+        [DisplayName(@"Background")]
+        [Description(@"The color with wich to fill the background.")]
+        public Color Background
         {
-            image = image.Rotate(_angle, new Gray(), _crop);
+            get { return _background; }
+            set { Set(ref _background, value); }
+        }
+
+        public override void Process(ref Image<Bgr, byte> image)
+        {
+            image = image.Rotate(_angle, new Bgr(_background.Color()), _crop);
         }
     }
 }

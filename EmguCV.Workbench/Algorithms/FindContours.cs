@@ -15,26 +15,19 @@ namespace EmguCV.Workbench.Algorithms
     {
         public override int Order => 10;
 
-        public FindContours()
-        {
-            Mode = RetrType.List;
-            Method = ChainApproxMethod.ChainApproxSimple;
-        }
-
-        public override void Process(Image<Gray, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
+        public override void Process(ref Image<Bgr, byte> image, out List<object> data)
         {
             using (var contours = new VectorOfVectorOfPoint())
             {
-                CvInvoke.FindContours(image, contours, null, _mode, _method);
+                CvInvoke.FindContours(image.Convert<Gray, byte>(), contours, null, _mode, _method);
 
-                annotatedImage = image.Convert<Bgr, byte>();
-                annotatedImage.DrawPolyline(contours.ToArrayOfArray(), false, new Bgr(Color.Red));
+                image.DrawPolyline(contours.ToArrayOfArray(), false, new Bgr(Color.Red));
 
                 data = contours.ToArrayOfArray().Select(c => new Contour(c)).Cast<object>().ToList();
             }
         }
 
-        private RetrType _mode;
+        private RetrType _mode = RetrType.List;
         [Category("Find Contours")]
         [PropertyOrder(0)]
         [DisplayName(@"Mode")]
@@ -46,7 +39,7 @@ namespace EmguCV.Workbench.Algorithms
             set { Set(ref _mode, value); }
         }
 
-        private ChainApproxMethod _method;
+        private ChainApproxMethod _method = ChainApproxMethod.ChainApproxSimple;
         [Category("Find Contours")]
         [PropertyOrder(1)]
         [DisplayName(@"Method")]

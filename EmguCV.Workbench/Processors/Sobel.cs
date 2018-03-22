@@ -8,19 +8,11 @@ namespace EmguCV.Workbench.Processors
 {
     public class Sobel : ImageProcessor
     {
-        public Sobel()
-        {
-            XOrder = 1;
-            YOrder = 0;
-            ApertureSize = 7;
-        }
-
-        private int _xorder;
+        private int _xorder = 1;
         [Category("Sobel")]
         [PropertyOrder(0)]
         [DisplayName(@"X Order")]
         [Description(@"Order of the derivative x.")]
-        [DefaultValue(1)]
         public int XOrder
         {
             get { return _xorder; }
@@ -32,28 +24,26 @@ namespace EmguCV.Workbench.Processors
         [PropertyOrder(1)]
         [DisplayName(@"Y Order")]
         [Description(@"Order of the derivative y.")]
-        [DefaultValue(0)]
         public int YOrder
         {
             get { return _yorder; }
             set { Set(ref _yorder, value.Clamp(0, 6)); }
         }
 
-        private int _apertureSize;
+        private int _apertureSize = 7;
         [Category("Sobel")]
         [PropertyOrder(2)]
         [DisplayName(@"Aperture Size")]
         [Description(@"Size of the extended Sobel kernel.")]
-        [DefaultValue(7)]
         public int ApertureSize
         {
             get { return _apertureSize; }
             set { Set(ref _apertureSize, value.ClampOdd(_apertureSize, 1, 7)); }
         }
 
-        public override void Process(ref Image<Gray, byte> image)
+        public override void Process(ref Image<Bgr, byte> image)
         {
-            image = image.Convert<Gray, float>().Sobel(_xorder, _yorder, _apertureSize).Convert<Gray, byte>();
+            image = image.Convert<Bgr, float>().Sobel(_xorder, _yorder, _apertureSize).Convert<Bgr, byte>();
         }
     }
 }

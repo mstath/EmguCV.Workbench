@@ -7,31 +7,22 @@ namespace EmguCV.Workbench.Processors
 {
     public class ThresholdBinary : ImageProcessor
     {
-        public ThresholdBinary()
-        {
-            Threshold = 127;
-            MaxValue = 255;
-            Invert = false;
-        }
-
-        private byte _threshold;
+        private byte _threshold = 127;
         [Category("Threshold Binary")]
         [PropertyOrder(0)]
         [DisplayName(@"Threshold")]
         [Description(@"The threshold value.")]
-        [DefaultValue(127)]
         public byte Threshold
         {
             get { return _threshold; }
             set { Set(ref _threshold, value); }
         }
 
-        private byte _maxValue;
+        private byte _maxValue = 255;
         [Category("Threshold Binary")]
         [PropertyOrder(1)]
         [DisplayName(@"Max Value")]
         [Description(@"The maximum value at threshold.")]
-        [DefaultValue(255)]
         public byte MaxValue
         {
             get { return _maxValue; }
@@ -43,18 +34,21 @@ namespace EmguCV.Workbench.Processors
         [PropertyOrder(2)]
         [DisplayName(@"Invert")]
         [Description(@"Select to invert threshold.")]
-        [DefaultValue(false)]
         public bool Invert
         {
             get { return _invert; }
             set { Set(ref _invert, value); }
         }
 
-        public override void Process(ref Image<Gray, byte> image)
+        public override void Process(ref Image<Bgr, byte> image)
         {
             image = !_invert
-                ? image.ThresholdBinary(new Gray(_threshold), new Gray(_maxValue))
-                : image.ThresholdBinaryInv(new Gray(_threshold), new Gray(_maxValue));
+                ? image.Convert<Gray, byte>()
+                    .ThresholdBinary(new Gray(_threshold), new Gray(_maxValue))
+                    .Convert<Bgr, byte>()
+                : image.Convert<Gray, byte>()
+                    .ThresholdBinaryInv(new Gray(_threshold), new Gray(_maxValue))
+                    .Convert<Bgr, byte>();
         }
     }
 }

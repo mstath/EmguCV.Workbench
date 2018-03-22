@@ -1,32 +1,28 @@
 ﻿using System.ComponentModel;
+using System.Windows.Media;
 using Emgu.CV;
 using Emgu.CV.Structure;
+using EmguCV.Workbench.Util;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Processors
 {
     public class And : ImageProcessor
     {
-        public And()
-        {
-            Color = 255;
-        }
-
-        private byte _color;
+        private Color _color = Colors.White;
         [Category("And")]
         [PropertyOrder(0)]
         [DisplayName(@"Color")]
         [Description(@"The color for the AND operation.")]
-        [DefaultValue(255)]
-        public byte Color
+        public Color Color
         {
             get { return _color; }
             set { Set(ref _color, value); }
         }
 
-        public override void Process(ref Image<Gray, byte> image)
+        public override void Process(ref Image<Bgr, byte> image)
         {
-            image = image.And(new Gray(_color));
+            image = image.And(new Bgr(_color.Color()));
         }
     }
 }

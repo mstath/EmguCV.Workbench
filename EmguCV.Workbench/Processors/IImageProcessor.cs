@@ -10,7 +10,7 @@ namespace EmguCV.Workbench.Processors
     {
         string Name { get; }
 
-        void Process(ref Image<Gray, byte> image);
+        void Process(ref Image<Bgr, byte> image);
     }
 
     public abstract class ImageProcessor : ViewModelBase, IImageProcessor
@@ -18,6 +18,6 @@ namespace EmguCV.Workbench.Processors
         [Browsable(false)]
         public string Name => Regex.Replace(GetType().Name, @"(\B[A-Z])", " $1");
 
-        public abstract void Process(ref Image<Gray, byte> image);
+        public abstract void Process(ref Image<Bgr, byte> image);
     }
 }

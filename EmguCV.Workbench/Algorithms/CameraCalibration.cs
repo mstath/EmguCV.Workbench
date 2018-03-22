@@ -22,23 +22,9 @@ namespace EmguCV.Workbench.Algorithms
 
         private Task _calTask;
 
-        public CameraCalibration()
-        {
-            TargetType = CalibTargetType.ChessBoard;
-            CornersPerRow = 10;
-            CornersPerCol = 6;
-            CirclesGridType = CalibCgType.SymmetricGrid;
-            ObjWidth = 10;
-            ObjHeight = 10;
-            CalibType = CalibType.RationalModel;
-            NumberOfImages = 1;
-            SnapDelay = 3.0f;
-        }
-
-        public override void Process(Image<Gray, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
+        public override void Process(ref Image<Bgr, byte> image, out List<object> data)
         {
             data = null;
-            annotatedImage = image.Convert<Bgr, byte>();
 
             if (_performCal && _calTask?.Status != TaskStatus.Running)
             {
@@ -47,16 +33,16 @@ namespace EmguCV.Workbench.Algorithms
             }
 
             if (_find)
-                FindCorners(image, ref annotatedImage, new VectorOfPointF());
+                FindCorners(ref image, new VectorOfPointF());
 
             if (_snap)
-                SnapCalibrate(image, ref annotatedImage);
+                SnapCalibrate(ref image);
 
             if (_undistort)
             {
                 var undistoredImage = image.Clone();
                 CvInvoke.Undistort(image, undistoredImage, _cameraMatrix, _distCoeffs);
-                annotatedImage = undistoredImage.Convert<Bgr, byte>();
+                image = undistoredImage;
             }
         }
 
@@ -72,7 +58,7 @@ namespace EmguCV.Workbench.Algorithms
             PerformCal = false;
         }
 
-        private bool FindCorners(Image<Gray, byte> image, ref Image<Bgr, byte> annotatedImage, VectorOfPointF corners)
+        private bool FindCorners(ref Image<Bgr, byte> image, VectorOfPointF corners)
         {
             var found = false;
             using (var det = new SimpleBlobDetector())
@@ -83,7 +69,7 @@ namespace EmguCV.Workbench.Algorithms
                     case CalibTargetType.ChessBoard:
                         found = CvInvoke.FindChessboardCorners(image, size, corners);
                         if (found)
-                            CvInvoke.CornerSubPix(image, corners, new Size(11, 11), new Size(-1, -1),
+                            CvInvoke.CornerSubPix(image.Convert<Gray, byte>(), corners, new Size(11, 11), new Size(-1, -1),
                                 new MCvTermCriteria(30, 0.1));
                         break;
 
@@ -91,7 +77,7 @@ namespace EmguCV.Workbench.Algorithms
                         found = CvInvoke.FindCirclesGrid(image, size, corners, _circlesGridType, det);
                         break;
                 }
-                CvInvoke.DrawChessboardCorners(annotatedImage, size, corners, found);
+                CvInvoke.DrawChessboardCorners(image, size, corners, found);
                 return found;
             }
         }
@@ -103,7 +89,7 @@ namespace EmguCV.Workbench.Algorithms
         private Mat _rvecs;
         private Mat _tvecs;
 
-        private void SnapCalibrate(Image<Gray, byte> image, ref Image<Bgr, byte> annotatedImage)
+        private void SnapCalibrate(ref Image<Bgr, byte> image)
         {
             try
             {
@@ -122,11 +108,11 @@ namespace EmguCV.Workbench.Algorithms
 
                 // find corners/circles
                 var corners = new VectorOfPointF();
-                var found = FindCorners(image, ref annotatedImage, corners);
+                var found = FindCorners(ref image, corners);
                 if (!found) return;
 
                 // flash outpout image
-                annotatedImage = annotatedImage.Not();
+                image = image.Not();
 
                 // add corners to image points vector
                 _imagePoints.Push(corners);
@@ -184,7 +170,7 @@ namespace EmguCV.Workbench.Algorithms
             }
         }
 
-        private CalibTargetType _targetType;
+        private CalibTargetType _targetType = CalibTargetType.ChessBoard;
         [Category("Camera Calibration")]
         [PropertyOrder(0)]
         [DisplayName(@"Target Type")]
@@ -195,7 +181,7 @@ namespace EmguCV.Workbench.Algorithms
             set { Set(ref _targetType, value); }
         }
 
-        private int _cornersPerRow;
+        private int _cornersPerRow = 10;
         [Category("Camera Calibration")]
         [PropertyOrder(1)]
         [DisplayName(@"Corners Per Row")]
@@ -206,7 +192,7 @@ namespace EmguCV.Workbench.Algorithms
             set { Set(ref _cornersPerRow, value.Clamp(2, 100)); }
         }
 
-        private int _cornersPerCol;
+        private int _cornersPerCol = 6;
         [Category("Camera Calibration")]
         [PropertyOrder(2)]
         [DisplayName(@"Corners Per Col")]
@@ -217,12 +203,11 @@ namespace EmguCV.Workbench.Algorithms
             set { Set(ref _cornersPerCol, value.Clamp(2, 100)); }
         }
 
-        private CalibCgType _circlesGridType;
+        private CalibCgType _circlesGridType = CalibCgType.SymmetricGrid;
         [Category("Camera Calibration")]
         [PropertyOrder(3)]
         [DisplayName(@"Circles Grid Type")]
         [Description(@"Type of circles grid calibration.")]
-        [DefaultValue(CalibCgType.SymmetricGrid)]
         public CalibCgType CirclesGridType
         {
             get { return _circlesGridType; }
@@ -240,7 +225,7 @@ namespace EmguCV.Workbench.Algorithms
             set { Set(ref _find, value); }
         }
 
-        private float _objWidth;
+        private float _objWidth = 10;
         [Category("Camera Calibration")]
         [PropertyOrder(5)]
         [DisplayName(@"Object Width")]
@@ -251,7 +236,7 @@ namespace EmguCV.Workbench.Algorithms
             set { Set(ref _objWidth, value); }
         }
 
-        private float _objHeight;
+        private float _objHeight = 10;
         [Category("Camera Calibration")]
         [PropertyOrder(6)]
         [DisplayName(@"Object Height")]
@@ -262,7 +247,7 @@ namespace EmguCV.Workbench.Algorithms
             set { Set(ref _objHeight, value); }
         }
 
-        private CalibType _calibType;
+        private CalibType _calibType = CalibType.RationalModel;
         [Category("Camera Calibration")]
         [PropertyOrder(7)]
         [DisplayName(@"Calibration Type")]
@@ -272,7 +257,7 @@ namespace EmguCV.Workbench.Algorithms
             set { Set(ref _calibType, value); }
         }
 
-        private int _numberOfImages;
+        private int _numberOfImages = 1;
         [Category("Camera Calibration")]
         [PropertyOrder(8)]
         [DisplayName(@"Number of Images")]
@@ -340,7 +325,7 @@ namespace EmguCV.Workbench.Algorithms
             set { Set(ref _performCal, value); }
         }
 
-        private float _snapDelay;
+        private float _snapDelay = 3;
         [Category("Camera Calibration")]
         [PropertyOrder(14)]
         [DisplayName(@"Snap Delay")]

@@ -39,7 +39,7 @@ namespace EmguCV.Workbench.Processors
             set { Set(ref _spaceSigma, value.Clamp(0, int.MaxValue)); }
         }
 
-        public override void Process(ref Image<Gray, byte> image)
+        public override void Process(ref Image<Bgr, byte> image)
         {
             image = image.SmoothBilatral(
                 _kernelSize,

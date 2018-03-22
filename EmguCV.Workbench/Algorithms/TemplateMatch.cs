@@ -13,14 +13,8 @@ namespace EmguCV.Workbench.Algorithms
     {
         public override int Order => 30;
 
-        public TemplateMatch()
+        public override void Process(ref Image<Bgr, byte> image, out List<object> data)
         {
-            Method = TemplateMatchingType.CcoeffNormed;
-        }
-
-        public override void Process(Image<Gray, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
-        {
-            annotatedImage = image.Convert<Bgr, byte>();
             data = null;
 
             if (Template == null)
@@ -30,7 +24,7 @@ namespace EmguCV.Workbench.Algorithms
 
             if (_viewResult)
             {
-                annotatedImage = result.Convert<Bgr, byte>();
+                image = result.Convert<Bgr, byte>();
                 return;
             }
 
@@ -40,11 +34,11 @@ namespace EmguCV.Workbench.Algorithms
             Response = maxValues[0];
 
             var rect = new Rectangle(maxLocations[0], Template.Size);
-            annotatedImage.Draw(rect, new Bgr(Color.Red));
+            image.Draw(rect, new Bgr(Color.Red));
             data = new List<object> {new Box(rect)};
         }
 
-        private TemplateMatchingType _method;
+        private TemplateMatchingType _method = TemplateMatchingType.CcoeffNormed;
         [Category("Template Match (selectable)")]
         [PropertyOrder(0)]
         [DisplayName(@"Method")]

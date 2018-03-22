@@ -12,37 +12,26 @@ namespace EmguCV.Workbench.Algorithms
     {
         public override int Order => 7;
 
-        public HoughCircles()
+        public override void Process(ref Image<Bgr, byte> image, out List<object> data)
         {
-            CannyThreshold = 255;
-            AccumulatorThreshold = 255;
-            Dp = 127;
-            MinDist = 1;
-            MinRadius = 0;
-            MaxRadius = 0;
-        }
+            base.Process(ref image, out data);
 
-        public override void Process(Image<Gray, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
-        {
-            base.Process(image, out annotatedImage, out data);
-
-            var circles = image.HoughCircles(
+            var circles = image.Convert<Gray, byte>().HoughCircles(
                 new Gray(_cannyThreshold),
                 new Gray(_accumulatorThreshold),
                 _dp,
                 _minDist,
                 _minRadius,
                 _maxRadius);
-            annotatedImage = image.Convert<Bgr, byte>();
             data = new List<object>();
             foreach (var circle in circles[0])
             {
-                annotatedImage.Draw(circle, new Bgr(Color.Red));
+                image.Draw(circle, new Bgr(Color.Red));
                 data.Add(new Circle(circle));
             }
         }
 
-        private byte _cannyThreshold;
+        private byte _cannyThreshold = 255;
         [Category("Hough Circles")]
         [PropertyOrder(0)]
         [DisplayName(@"Canny Threshold")]
@@ -53,7 +42,7 @@ namespace EmguCV.Workbench.Algorithms
             set { Set(ref _cannyThreshold, value); }
         }
 
-        private byte _accumulatorThreshold;
+        private byte _accumulatorThreshold = 255;
         [Category("Hough Circles")]
         [PropertyOrder(1)]
         [DisplayName(@"Accumulator Threshold")]
@@ -64,7 +53,7 @@ namespace EmguCV.Workbench.Algorithms
             set { Set(ref _accumulatorThreshold, value); }
         }
 
-        private double _dp;
+        private double _dp = 127;
         [Category("Hough Circles")]
         [PropertyOrder(2)]
         [DisplayName(@"dp")]
@@ -75,7 +64,7 @@ namespace EmguCV.Workbench.Algorithms
             set { Set(ref _dp, value); }
         }
 
-        private double _minDist;
+        private double _minDist = 1;
         [Category("Hough Circles")]
         [PropertyOrder(3)]
         [DisplayName(@"Min Distance")]

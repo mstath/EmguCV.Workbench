@@ -81,7 +81,9 @@
     <Compile Include="Algorithms\IImageAlgorithm.cs" />
     <Compile Include="Algorithms\None.cs" />
     <Compile Include="Algorithms\TemplateMatch.cs" />
+    <Compile Include="Processors\Denoise.cs" />
     <Compile Include="Processors\GaussianPyramid .cs" />
+    <Compile Include="Processors\GrayScale.cs" />
     <Compile Include="Processors\Undistort.cs" />
     <Compile Include="Processors\WarpPerspective.cs" />
     <Compile Include="Util\Enums.cs" />
@@ -99,7 +101,7 @@
     <Compile Include="Processors\ThresholdAdaptive.cs" />
     <Compile Include="Processors\ThresholdBinary.cs" />
     <Compile Include="Processors\Canny.cs" />
-    <Compile Include="Processors\Denoise.cs" />
+    <Compile Include="Processors\GrayDenoise.cs" />
     <Compile Include="Processors\Derivitive.cs" />
     <Compile Include="Processors\Dilate.cs" />
     <Compile Include="Processors\EqualizeHist.cs" />

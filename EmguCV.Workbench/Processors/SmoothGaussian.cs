@@ -8,12 +8,7 @@ namespace EmguCV.Workbench.Processors
 {
     public class SmoothGaussian : ImageProcessor
     {
-        public SmoothGaussian()
-        {
-            KernelSize = 1;
-        }
-
-        private int _kernelSize;
+        private int _kernelSize = 1;
         [Category("Smooth Gaussian")]
         [PropertyOrder(0)]
         [DisplayName(@"Kernel Size")]
@@ -25,7 +20,7 @@ namespace EmguCV.Workbench.Processors
             set { Set(ref _kernelSize, value.ClampOdd(_kernelSize, 1, 639)); }
         }
 
-        public override void Process(ref Image<Gray, byte> image)
+        public override void Process(ref Image<Bgr, byte> image)
         {
             image = image.SmoothGaussian(_kernelSize);
         }

@@ -13,37 +13,25 @@ namespace EmguCV.Workbench.Algorithms
     {
         public override int Order => 6;
 
-        public HoughLines()
+        public override void Process(ref Image<Bgr, byte> image, out List<object> data)
         {
-            CannyThreshold = 255;
-            CannyThresholdLinking = 255;
-            RhoResolution = 1;
-            ThetaResolution = 1;
-            Threshold = 100;
-            MinLineWidth = 0;
-            GapBetweenLines = 70;
-        }
-
-        public override void Process(Image<Gray, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
-        {
-            var lines = image.HoughLines(
+            var lines = image.Convert<Gray, byte>().HoughLines(
                 _cannyThreshold,
                 _cannyThresholdLinking,
                 _rhoResolution,
-                _thetaResolution * Math.PI / 180,
+                _thetaResolution*Math.PI/180,
                 _threshold,
                 _minLineWidth,
                 _gapBetweenLines);
-            annotatedImage = image.Convert<Bgr, byte>();
             data = new List<object>();
             foreach (var line in lines[0])
             {
-                annotatedImage.Draw(line, new Bgr(Color.Red), 1);
+                image.Draw(line, new Bgr(Color.Red), 1);
                 data.Add(new Segment(line));
             }
         }
 
-        private double _cannyThreshold;
+        private double _cannyThreshold = 255;
         [Category("Hough Lines")]
         [PropertyOrder(0)]
         [DisplayName(@"Canny Threshold")]
@@ -54,7 +42,7 @@ namespace EmguCV.Workbench.Algorithms
             set { Set(ref _cannyThreshold, value); }
         }
 
-        private double _cannyThresholdLinking;
+        private double _cannyThresholdLinking = 255;
         [Category("Hough Lines")]
         [PropertyOrder(1)]
         [DisplayName(@"Canny Threshold Linking")]
@@ -65,7 +53,7 @@ namespace EmguCV.Workbench.Algorithms
             set { Set(ref _cannyThresholdLinking, value); }
         }
 
-        private double _rhoResolution;
+        private double _rhoResolution = 1;
         [Category("Hough Lines")]
         [PropertyOrder(2)]
         [DisplayName(@"Rho Resolution")]
@@ -76,7 +64,7 @@ namespace EmguCV.Workbench.Algorithms
             set { Set(ref _rhoResolution, value); }
         }
 
-        private double _thetaResolution;
+        private double _thetaResolution = 1;
         [Category("Hough Lines")]
         [PropertyOrder(3)]
         [DisplayName(@"Theta Resolution")]
@@ -87,7 +75,7 @@ namespace EmguCV.Workbench.Algorithms
             set { Set(ref _thetaResolution, value); }
         }
 
-        private int _threshold;
+        private int _threshold = 100;
         [Category("Hough Lines")]
         [PropertyOrder(4)]
         [DisplayName(@"Threshold")]
@@ -109,7 +97,7 @@ namespace EmguCV.Workbench.Algorithms
             set { Set(ref _minLineWidth, value); }
         }
 
-        private double _gapBetweenLines;
+        private double _gapBetweenLines = 70;
         [Category("Hough Lines")]
         [PropertyOrder(6)]
         [DisplayName(@"Gap Between Lines")]

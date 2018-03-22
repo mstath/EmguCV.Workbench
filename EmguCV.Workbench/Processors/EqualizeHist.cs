@@ -5,11 +5,11 @@ namespace EmguCV.Workbench.Processors
 {
     public class EqualizeHist : ImageProcessor
     {
-        public override void Process(ref Image<Gray, byte> image)
+        public override void Process(ref Image<Bgr, byte> image)
         {
-            var eqh = new Image<Gray, byte>(image.Width, image.Height);
-            CvInvoke.EqualizeHist(image, eqh);
-            image = eqh;
+            var dst = new Image<Gray, byte>(image.Width, image.Height);
+            CvInvoke.EqualizeHist(image.Convert<Gray, byte>(), dst);
+            image = dst.Convert<Bgr, byte>();
         }
     }
 }

@@ -13,14 +13,13 @@ namespace EmguCV.Workbench.Processors
         [PropertyOrder(0)]
         [DisplayName(@"Max Level")]
         [Description(@"The number of levels for the pyramid.")]
-        [DefaultValue(0)]
         public int MaxLevel
         {
             get { return _maxLevel; }
             set { Set(ref _maxLevel, value.Clamp(0, int.MaxValue)); }
         }
 
-        public override void Process(ref Image<Gray, byte> image)
+        public override void Process(ref Image<Bgr, byte> image)
         {
             for (var i = 0; i < _maxLevel; i++)
                 image = image.PyrUp().PyrDown();

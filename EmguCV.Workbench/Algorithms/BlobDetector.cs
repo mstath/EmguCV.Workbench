@@ -17,17 +17,16 @@ namespace EmguCV.Workbench.Algorithms
 
         private readonly SimpleBlobDetectorParams _params = new SimpleBlobDetectorParams();
 
-        public override void Process(Image<Gray, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
+        public override void Process(ref Image<Bgr, byte> image, out List<object> data)
         {
             using (var dt = new SimpleBlobDetector(_params))
             using (var kp = new VectorOfKeyPoint())
             {
                 dt.DetectRaw(image, kp);
-                annotatedImage = image.Convert<Bgr, byte>();
                 Features2DToolbox.DrawKeypoints(
-                    annotatedImage,
+                    image,
                     kp,
-                    annotatedImage,
+                    image,
                     new Bgr(Color.Red),
                     Features2DToolbox.KeypointDrawType.DrawRichKeypoints);
 

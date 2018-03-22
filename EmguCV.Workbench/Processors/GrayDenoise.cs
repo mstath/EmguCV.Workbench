@@ -6,7 +6,7 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Processors
 {
-    public class Denoise : ImageProcessor
+    public class GrayDenoise : ImageProcessor
     {
         private float _h = 3;
         [Category("Denoise")]
@@ -17,17 +17,6 @@ namespace EmguCV.Workbench.Processors
         {
             get { return _h; }
             set { Set(ref _h, value); }
-        }
-
-        private float _hColor = 10;
-        [Category("Denoise")]
-        [PropertyOrder(1)]
-        [DisplayName(@"Color Filter Strength")]
-        [Description(@"The same as Filter Strength but for color components.")]
-        public float HColor
-        {
-            get { return _hColor; }
-            set { Set(ref _hColor, value); }
         }
 
         private int _templateWindowSize = 7;
@@ -54,9 +43,9 @@ namespace EmguCV.Workbench.Processors
 
         public override void Process(ref Image<Bgr, byte> image)
         {
-            var dst = new Image<Bgr, byte>(image.Width, image.Height);
-            CvInvoke.FastNlMeansDenoisingColored(image, dst, _h, _hColor, _templateWindowSize, _searchWindowSize);
-            image = dst;
+            var dst = new Image<Gray, byte>(image.Width, image.Height);
+            CvInvoke.FastNlMeansDenoising(image.Convert<Gray, byte>(), dst, _h, _templateWindowSize, _searchWindowSize);
+            image = dst.Convert<Bgr, byte>();
         }
     }
 }

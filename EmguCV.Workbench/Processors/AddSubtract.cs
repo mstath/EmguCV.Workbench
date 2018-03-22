@@ -1,18 +1,20 @@
 ﻿using System.ComponentModel;
+using System.Windows.Media;
 using Emgu.CV;
 using Emgu.CV.Structure;
+using EmguCV.Workbench.Util;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Processors
 {
     class AddSubtract : ImageProcessor
     {
-        private byte _color;
+        private Color _color = Colors.Black;
         [Category("Add Subtract")]
         [PropertyOrder(0)]
         [DisplayName(@"Color")]
         [Description(@"The color value to be added/subtracted to the image.")]
-        public byte Color
+        public Color Color
         {
             get { return _color; }
             set { Set(ref _color, value); }
@@ -29,9 +31,9 @@ namespace EmguCV.Workbench.Processors
             set { Set(ref _subtract, value); }
         }
 
-        public override void Process(ref Image<Gray, byte> image)
+        public override void Process(ref Image<Bgr, byte> image)
         {
-            image = !_subtract ? image.Add(new Gray(_color)) : image.Sub(new Gray(_color));
+            image = !_subtract ? image.Add(new Bgr(_color.Color())) : image.Sub(new Bgr(_color.Color()));
         }
     }
 }

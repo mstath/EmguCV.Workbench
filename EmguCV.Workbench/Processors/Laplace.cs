@@ -8,26 +8,20 @@ namespace EmguCV.Workbench.Processors
 {
     public class Laplace : ImageProcessor
     {
-        public Laplace()
-        {
-            ApertureSize = 1;
-        }
-
-        private int _apertureSize;
+        private int _apertureSize = 1;
         [Category("Laplace")]
         [PropertyOrder(0)]
         [DisplayName(@"Aperture Size")]
         [Description(@"Aperture size.")]
-        [DefaultValue(1)]
         public int ApertureSize
         {
             get { return _apertureSize; }
             set { Set(ref _apertureSize, value.ClampOdd(_apertureSize, 1, 31)); }
         }
 
-        public override void Process(ref Image<Gray, byte> image)
+        public override void Process(ref Image<Bgr, byte> image)
         {
-            image = image.Convert<Gray, float>().Laplace(_apertureSize).Convert<Gray, byte>();
+            image = image.Convert<Bgr, float>().Laplace(_apertureSize).Convert<Bgr, byte>();
         }
     }
 }

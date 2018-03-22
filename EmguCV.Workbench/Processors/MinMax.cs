@@ -1,24 +1,20 @@
 ﻿using System.ComponentModel;
+using System.Windows.Media;
 using Emgu.CV;
 using Emgu.CV.Structure;
+using EmguCV.Workbench.Util;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Processors
 {
     public class MinMax : ImageProcessor
     {
-        public MinMax()
-        {
-            Value = 127;
-        }
-
-        private byte _value;
+        private Color _value = Colors.Black;
         [Category("Min Max")]
         [PropertyOrder(0)]
         [DisplayName(@"Value")]
         [Description(@"The value to compare with.")]
-        [DefaultValue(127)]
-        public byte Value
+        public Color Value
         {
             get { return _value; }
             set { Set(ref _value, value); }
@@ -29,16 +25,18 @@ namespace EmguCV.Workbench.Processors
         [PropertyOrder(1)]
         [DisplayName(@"Max")]
         [Description(@"Unchecked: minimum of image and value.  Checked: maximum of image and value.")]
-        [DefaultValue(false)]
         public bool Max
         {
             get { return _max; }
             set { Set(ref _max, value); }
         }
 
-        public override void Process(ref Image<Gray, byte> image)
+        public override void Process(ref Image<Bgr, byte> image)
         {
-            image = !_max ? image.Min(_value) : image.Max(_value);
+            using (var color = new Image<Bgr, byte>(image.Width, image.Height, new Bgr(_value.Color())))
+            {
+                image = !_max ? image.Min(color) : image.Max(color);
+            }
         }
     }
 }

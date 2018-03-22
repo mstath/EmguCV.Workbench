@@ -13,14 +13,14 @@ namespace EmguCV.Workbench.Algorithms
 
         int Order { get; }
 
-        void Process(Image<Gray, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data);
+        void Process(ref Image<Bgr, byte> image, out List<object> data);
     }
 
     public interface IImageTemplateAlgorithm : IImageAlgorithm
     {
-        Image<Gray, byte> Template { get; }
+        Image<Bgr, byte> Template { get; }
 
-        void SetTemplate(Image<Gray, byte> template);
+        void SetTemplate(Image<Bgr, byte> template);
     }
 
     public abstract class ImageAlgorithm : ViewModelBase, IImageAlgorithm
@@ -31,10 +31,8 @@ namespace EmguCV.Workbench.Algorithms
         [Browsable(false)]
         public abstract int Order { get; }
 
-        public virtual void Process(Image<Gray, byte> image, out Image<Bgr, byte> annotatedImage,
-            out List<object> data)
+        public virtual void Process(ref Image<Bgr, byte> image, out List<object> data)
         {
-            annotatedImage = image.Convert<Bgr, byte>();
             data = null;
         }
     }
@@ -42,9 +40,9 @@ namespace EmguCV.Workbench.Algorithms
     public abstract class ImageTemplateAlgorithm : ImageAlgorithm, IImageTemplateAlgorithm
     {
         [Browsable(false)]
-        public Image<Gray, byte> Template { get; protected set; }
+        public Image<Bgr, byte> Template { get; protected set; }
 
-        public virtual void SetTemplate(Image<Gray, byte> template)
+        public virtual void SetTemplate(Image<Bgr, byte> template)
         {
             Template = template;
         }

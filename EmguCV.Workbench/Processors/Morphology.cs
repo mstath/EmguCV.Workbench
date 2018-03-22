@@ -10,66 +10,51 @@ namespace EmguCV.Workbench.Processors
 {
     public class Morphology : ImageProcessor
     {
-        public Morphology()
-        {
-            MorphOp = MorphOp.Erode;
-            ElementShape = ElementShape.Rectangle;
-            SizeWidth = 3;
-            SizeHeight = 3;
-            AnchorX = -1;
-            AnchorY = -1;
-            Iterations = 1;
-        }
-
-        private MorphOp _morphOp;
+        private MorphOp _morphOp = MorphOp.Erode;
         [Category("Morphology")]
         [PropertyOrder(0)]
         [DisplayName(@"Morphology Operation")]
         [Description(@"Type of morphological operation.")]
-        [DefaultValue(MorphOp.Erode)]
         public MorphOp MorphOp
         {
             get { return _morphOp; }
             set { Set(ref _morphOp, value); }
         }
 
-        private ElementShape _elementShape;
+        private ElementShape _elementShape = ElementShape.Rectangle;
         [Category("Morphology")]
         [PropertyOrder(1)]
         [DisplayName(@"Element Shape")]
         [Description(@"Element shape.")]
-        [DefaultValue(ElementShape.Rectangle)]
         public ElementShape ElementShape
         {
             get { return _elementShape; }
             set { Set(ref _elementShape, value); }
         }
 
-        private int _sizeWidth;
+        private int _sizeWidth = 3;
         [Category("Morphology")]
         [PropertyOrder(2)]
         [DisplayName(@"Size Width")]
         [Description(@"Size of the structuring element.")]
-        [DefaultValue(3)]
         public int SizeWidth
         {
             get { return _sizeWidth; }
             set { Set(ref _sizeWidth, value.Clamp(1, int.MaxValue)); }
         }
 
-        private int _sizeHeight;
+        private int _sizeHeight = 3;
         [Category("Morphology")]
         [PropertyOrder(3)]
         [DisplayName(@"Size Height")]
         [Description(@"Size of the structuring element.")]
-        [DefaultValue(3)]
         public int SizeHeight
         {
             get { return _sizeHeight; }
             set { Set(ref _sizeHeight, value.Clamp(1, int.MaxValue)); }
         }
 
-        private int _anchorX;
+        private int _anchorX = -1;
         [Category("Morphology")]
         [PropertyOrder(4)]
         [DisplayName(@"Anchor X")]
@@ -81,7 +66,7 @@ namespace EmguCV.Workbench.Processors
             set { Set(ref _anchorX, value.Clamp(-1, _sizeWidth - 1)); }
         }
 
-        private int _anchorY;
+        private int _anchorY = -1;
         [Category("Morphology")]
         [PropertyOrder(5)]
         [DisplayName(@"Anchor Y")]
@@ -93,7 +78,7 @@ namespace EmguCV.Workbench.Processors
             set { Set(ref _anchorY, value.Clamp(-1, _sizeHeight - 1)); }
         }
 
-        private int _iterations;
+        private int _iterations = 1;
         [Category("Morphology")]
         [PropertyOrder(6)]
         [DisplayName(@"Iterations")]
@@ -105,7 +90,7 @@ namespace EmguCV.Workbench.Processors
             set { Set(ref _iterations, value.Clamp(0, int.MaxValue)); }
         }
 
-        public override void Process(ref Image<Gray, byte> image)
+        public override void Process(ref Image<Bgr, byte> image)
         {
             var element = CvInvoke.GetStructuringElement(_elementShape, new Size(_sizeWidth, _sizeHeight),
                 new Point(_anchorX, _anchorY));

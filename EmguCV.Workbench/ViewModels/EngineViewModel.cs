@@ -26,10 +26,8 @@ namespace EmguCV.Workbench.ViewModels
         private readonly Stopwatch _sw;
         private readonly object _lock = new object();
 
-        private Image<Gray, byte> _image;
-        public Image<Gray, byte> Image => _image;
-        private Image<Bgr, byte> _annotatedImage;
-        public Image<Bgr, byte> AnnotatedImage => _annotatedImage;
+        private Image<Bgr, byte> _image;
+        public Image<Bgr, byte> Image => _image;
 
         public RelayCommand SelectFileCommand { get; set; }
         public RelayCommand SnapImageCommand { get; set; }
@@ -96,36 +94,36 @@ namespace EmguCV.Workbench.ViewModels
                         _processorVm.Process(ref _image);
 
                         lock (_lock)
-                            _algorithmVm.SelectedAlgorithm.Process(_image, out _annotatedImage, out data);
+                            _algorithmVm.SelectedAlgorithm.Process(ref _image, out data);
                     }
                     catch (Exception ex)
                     {
                         lock (_lock)
-                            _annotatedImage = GetExceptionImage(ex);
+                            _image = GetExceptionImage(ex);
                     }
                     finally
                     {
                         _sw.Stop();
-                        _imageVm.SetImage(_annotatedImage);
+                        _imageVm.SetImage(_image);
                         _imageVm.Data = data;
-                        _imageVm.FrameSizeStatus = $"{_annotatedImage.Width} x {_annotatedImage.Height}";
+                        _imageVm.FrameSizeStatus = $"{_image.Width} x {_image.Height}";
                         _imageVm.FrameTimeStatus = $"{_sw.ElapsedMilliseconds} ms";
                     }
                 }
             });
         }
 
-        private Image<Gray, byte> GetImage()
+        private Image<Bgr, byte> GetImage()
         {
             if (_isCameraSource)
-                return _cameras[_cameraIndex].QueryFrame().ToImage<Gray, byte>();
+                return _cameras[_cameraIndex].QueryFrame().ToImage<Bgr, byte>();
 
             Thread.Sleep(SleepTime);
 
             if (!string.IsNullOrEmpty(_imageFile) && File.Exists(_imageFile))
-                return new Image<Gray, byte>(_imageFile);
+                return new Image<Bgr, byte>(_imageFile);
 
-            return new Image<Gray, byte>(640, 480);
+            return new Image<Bgr, byte>(640, 480);
         }
 
         private Image<Bgr, byte> GetExceptionImage(Exception ex)
@@ -206,13 +204,13 @@ namespace EmguCV.Workbench.ViewModels
 
         private void DoSnapImage()
         {
-            if (_annotatedImage != null)
+            if (_image != null)
             {
                 lock (_lock)
                 {
                     var dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
                     var file = DateTime.Now.ToString("yyyy.MM.dd.HH.mm.ss") + ".png";
-                    _annotatedImage.Save(Path.Combine(dir, file));
+                    _image.Save(Path.Combine(dir, file));
                 }
             }
         }
