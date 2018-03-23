@@ -61,6 +61,8 @@ namespace EmguCV.Workbench.ViewModels
             else
                 HasCameras = IsCameraSource = false;
 
+            IsFileSource = !IsCameraSource;
+
             _sw = Stopwatch.StartNew();
         }
 
