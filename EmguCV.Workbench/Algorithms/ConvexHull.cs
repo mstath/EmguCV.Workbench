@@ -3,7 +3,6 @@ using System.Drawing;
 using System.Linq;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
-using Emgu.CV.Features2D;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
 using EmguCV.Workbench.Model;
@@ -27,29 +26,21 @@ namespace EmguCV.Workbench.Algorithms
                     RetrType.List,
                     ChainApproxMethod.ChainApproxSimple);
 
-                var points =
-                    contours
+                var points = contours
                     .ToArrayOfArray()
-                        .SelectMany(contour => contour)
-                        .Select(p => new MKeyPoint {Point = new PointF(p.X, p.Y)})
-                        .ToArray();
+                    .SelectMany(c => c)
+                    .Select(p => new PointF(p.X, p.Y))
+                    .ToArray();
 
-                var convexHull =
-                    CvInvoke
-                        .ConvexHull(
-                            points
-                                .Select(p => new PointF(p.Point.X, p.Point.Y))
-                                .ToArray())
-                        .Select(Point.Round)
-                        .ToArray();
+                foreach (var point in points)
+                    annotatedImage.Draw(new CircleF {Center = point, Radius = 1}, new Bgr(Color.Lime));
 
-                Features2DToolbox.DrawKeypoints(
-                    annotatedImage,
-                    new VectorOfKeyPoint(points),
-                    annotatedImage,
-                    new Bgr(Color.LimeGreen));
+                var convexHull = CvInvoke.ConvexHull(points);
 
-                annotatedImage.DrawPolyline(convexHull, true, new Bgr(Color.Red));
+                annotatedImage.DrawPolyline(
+                    convexHull.Select(Point.Round).ToArray(),
+                    true, 
+                    new Bgr(Color.Red));
 
                 data = new List<object> {new Contour(convexHull)};
             }
