@@ -17,19 +17,19 @@
         </Grid.RowDefinitions>
 
         <!-- image -->
-        <Canvas Name="ImageCanvas"
+        <Canvas Name="Canvas"
                 Grid.Row="0"
                 Width="640"
                 Height="480"
-                MouseLeftButtonDown="ImageCanvas_MouseLeftButtonDown"
-                MouseMove="ImageCanvas_MouseMove">
-            <Image Name="Image" Source="{Binding Image}" Width="{Binding Width, ElementName=ImageCanvas}" Height="{Binding Height, ElementName=ImageCanvas}" />
+                MouseLeftButtonDown="Canvas_MouseLeftButtonDown"
+                MouseMove="Canvas_MouseMove">
+            <Image Name="Image" Source="{Binding Image}" Width="{Binding Width, ElementName=Canvas}" Height="{Binding Height, ElementName=Canvas}" />
             <TextBlock Canvas.Left="5" Canvas.Bottom="3" FontSize="12" Foreground="Red" Text="{Binding FrameSizeStatus}" />
             <TextBlock Canvas.Right="5" Canvas.Bottom="3" FontSize="12" Foreground="Red" Text="{Binding FrameTimeStatus}" />
         </Canvas>
 
         <!-- data -->
-        <DataGrid Grid.Row="1" HorizontalAlignment="Stretch" Height="150" VerticalAlignment="Top" IsReadOnly="True" ItemsSource="{Binding Data}" Margin="0,5,0,0" />
+        <DataGrid Name="DataGrid" Grid.Row="1" HorizontalAlignment="Stretch" Height="150" VerticalAlignment="Top" IsReadOnly="True" ItemsSource="{Binding Data}" Margin="0,5,0,0" SelectionChanged="DataGrid_SelectionChanged" />
 
     </Grid>
 </UserControl>

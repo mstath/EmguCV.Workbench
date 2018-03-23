@@ -1,12 +1,17 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Windows.Media.Imaging;
 using Emgu.CV;
+using Emgu.CV.Features2D;
 using Emgu.CV.Structure;
+using Emgu.CV.Util;
 using EmguCV.Workbench.Algorithms;
+using EmguCV.Workbench.Model;
 using EmguCV.Workbench.Util;
 
 namespace EmguCV.Workbench.ViewModels
@@ -58,6 +63,41 @@ namespace EmguCV.Workbench.ViewModels
             {
                 Console.WriteLine(ex);
             }
+        }
+
+        public void DrawObjects(IList objects)
+        {
+            var image = EngineVm.Image.Clone();
+
+            var keypoints = objects
+                .OfType<KeyPoint>()
+                .Select(o => o.GetKeyPoint())
+                .ToArray();
+
+            Features2DToolbox
+                .DrawKeypoints(
+                    image,
+                    new VectorOfKeyPoint(keypoints),
+                    image,
+                    new Bgr(Color.Red),
+                    Features2DToolbox.KeypointDrawType.DrawRichKeypoints);
+
+            foreach (var obj in objects.OfType<Box>())
+                image.Draw(obj.GetBox(), new Bgr(Color.Red));
+
+            foreach (var obj in objects.OfType<Circle>())
+                image.Draw(obj.GetCircle(), new Bgr(Color.Red));
+
+            foreach (var obj in objects.OfType<Contour>())
+                image.Draw(obj.GetContour(), new Bgr(Color.Red));
+
+            foreach (var obj in objects.OfType<RotatedBox>())
+                image.Draw(obj.GetBox(), new Bgr(Color.Red), 1);
+
+            foreach (var obj in objects.OfType<Segment>())
+                image.Draw(obj.GetSegment(), new Bgr(Color.Red), 1);
+
+            SetImage(image);
         }
 
         private BitmapImage _image;
