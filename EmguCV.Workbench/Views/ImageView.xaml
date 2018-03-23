@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:vm="clr-namespace:EmguCV.Workbench.ViewModels" 
              mc:Ignorable="d" 
-             Width="640"
+             Width="800"
              Height="Auto">
     <UserControl.DataContext>
         <vm:ImageViewModel/>
@@ -19,8 +19,8 @@
         <!-- image -->
         <Canvas Name="Canvas"
                 Grid.Row="0"
-                Width="640"
-                Height="480"
+                Width="800"
+                Height="600"
                 MouseLeftButtonDown="Canvas_MouseLeftButtonDown"
                 MouseMove="Canvas_MouseMove">
             <Image Name="Image" Source="{Binding Image}" Width="{Binding Width, ElementName=Canvas}" Height="{Binding Height, ElementName=Canvas}" />
@@ -29,7 +29,15 @@
         </Canvas>
 
         <!-- data -->
-        <DataGrid Name="DataGrid" Grid.Row="1" HorizontalAlignment="Stretch" Height="150" VerticalAlignment="Top" IsReadOnly="True" ItemsSource="{Binding Data}" Margin="0,5,0,0" SelectionChanged="DataGrid_SelectionChanged" />
+        <DataGrid Name="DataGrid"
+                  Grid.Row="1" 
+                  HorizontalAlignment="Stretch"
+                  Height="200"
+                  VerticalAlignment="Top"
+                  IsReadOnly="True"
+                  ItemsSource="{Binding Data}"
+                  Margin="0,5,0,0" 
+                  SelectionChanged="DataGrid_SelectionChanged" />
 
     </Grid>
 </UserControl>

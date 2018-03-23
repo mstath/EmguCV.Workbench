@@ -24,4 +24,10 @@ namespace EmguCV.Workbench.Util
         ChessBoard,
         CirclesGrid
     }
+
+    public enum SobelOrder
+    {
+        X,
+        Y
+    }
 }

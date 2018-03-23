@@ -6,7 +6,8 @@
              xmlns:vm="clr-namespace:EmguCV.Workbench.ViewModels"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
-             Height="Auto" Width="200">
+             d:DesignHeight="300"
+             Width="240">
     <UserControl.DataContext>
         <vm:AlgorithmViewModel/>
     </UserControl.DataContext>
@@ -14,7 +15,7 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <!-- alogorithms selector -->
@@ -30,13 +31,11 @@
             <xctk:PropertyGrid
                     SelectedObject="{Binding ElementName=Algorithms, Path=SelectedValue}"
                     Grid.Row="1"
-                    Height="180"
                     Margin="5,0,5,5"
+                    NameColumnWidth="100" 
                     ShowSearchBox="False"
                     ShowTitle="False"
-                    ShowSortOptions="False"
-                    NameColumnWidth="90"
-                    FontSize="10" />
+                    ShowSortOptions="False" />
 
         </Grid>
     </GroupBox>

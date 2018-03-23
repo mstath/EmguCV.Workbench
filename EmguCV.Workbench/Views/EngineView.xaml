@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:vm="clr-namespace:EmguCV.Workbench.ViewModels" 
              mc:Ignorable="d" 
-             Height="Auto" Width="200">
+             Height="Auto" Width="240">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </UserControl.Resources>

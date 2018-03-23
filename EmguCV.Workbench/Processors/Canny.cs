@@ -44,7 +44,7 @@ namespace EmguCV.Workbench.Processors
         [Category("Canny")]
         [PropertyOrder(3)]
         [DisplayName(@"L2 Gradient")]
-        [Description(@"A flag indicating whether a more accurate norm should be used to calculate the image gradient magnitude.")]
+        [Description(@"Use a more accurate norm.")]
         public bool L2Gradient
         {
             get { return _l2Gradient; }

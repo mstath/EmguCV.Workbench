@@ -8,26 +8,25 @@ namespace EmguCV.Workbench.Processors
 {
     public class Sobel : ImageProcessor
     {
-        private int _xorder = 1;
+        private SobelOrder _order;
         [Category("Sobel")]
         [PropertyOrder(0)]
-        [DisplayName(@"X Order")]
-        [Description(@"Order of the derivative x.")]
-        public int XOrder
+        [DisplayName(@"Order")]
+        [Description(@"Order of the derivative.")]
+        public SobelOrder Order
         {
-            get { return _xorder; }
-            set { Set(ref _xorder, value.Clamp(0, 6)); }
+            get { return _order; }
+            set { Set(ref _order, value); }
         }
 
-        private int _yorder;
+        private int _orderValue = 1;
         [Category("Sobel")]
         [PropertyOrder(1)]
-        [DisplayName(@"Y Order")]
-        [Description(@"Order of the derivative y.")]
+        [DisplayName(@"Order Value")]
         public int YOrder
         {
-            get { return _yorder; }
-            set { Set(ref _yorder, value.Clamp(0, 6)); }
+            get { return _orderValue; }
+            set { Set(ref _orderValue, value.Clamp(1, _apertureSize - 1)); }
         }
 
         private int _apertureSize = 7;
@@ -38,12 +37,18 @@ namespace EmguCV.Workbench.Processors
         public int ApertureSize
         {
             get { return _apertureSize; }
-            set { Set(ref _apertureSize, value.ClampOdd(_apertureSize, 1, 7)); }
+            set { Set(ref _apertureSize, value.ClampOdd(_apertureSize, 1, 31)); }
         }
 
         public override void Process(ref Image<Bgr, byte> image)
         {
-            image = image.Convert<Bgr, float>().Sobel(_xorder, _yorder, _apertureSize).Convert<Bgr, byte>();
+            image = image
+                .Convert<Bgr, float>()
+                .Sobel(
+                    _order == SobelOrder.X ? _orderValue : 0,
+                    _order == SobelOrder.Y ? _orderValue : 0,
+                    _apertureSize)
+                .Convert<Bgr, byte>();
         }
     }
 }
