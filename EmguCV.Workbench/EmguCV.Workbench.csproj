@@ -75,6 +75,7 @@
     </ApplicationDefinition>
     <Compile Include="Algorithms\BlobDetector.cs" />
     <Compile Include="Algorithms\CameraCalibration.cs" />
+    <Compile Include="Algorithms\ConvexHull.cs" />
     <Compile Include="Algorithms\FindContours.cs" />
     <Compile Include="Algorithms\HoughCircles.cs" />
     <Compile Include="Algorithms\HoughLines.cs" />
