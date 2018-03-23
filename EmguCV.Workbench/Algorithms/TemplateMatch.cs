@@ -43,7 +43,6 @@ namespace EmguCV.Workbench.Algorithms
         [PropertyOrder(0)]
         [DisplayName(@"Method")]
         [Description(@"Specifies the way the template must be compared with image regions.")]
-        [DefaultValue(TemplateMatchingType.CcoeffNormed)]
         public TemplateMatchingType Method
         {
             get { return _method; }

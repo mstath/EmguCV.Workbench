@@ -30,4 +30,10 @@ namespace EmguCV.Workbench.Util
         X,
         Y
     }
+
+    public enum BoundingRectType
+    {
+        Upright,
+        Rotated
+    }
 }

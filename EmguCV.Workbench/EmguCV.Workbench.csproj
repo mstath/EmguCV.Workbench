@@ -74,6 +74,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Algorithms\BlobDetector.cs" />
+    <Compile Include="Algorithms\BoundingRectangle.cs" />
     <Compile Include="Algorithms\CameraCalibration.cs" />
     <Compile Include="Algorithms\ConvexHull.cs" />
     <Compile Include="Algorithms\FindContours.cs" />

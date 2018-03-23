@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using Emgu.CV;
@@ -6,6 +7,7 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
 using EmguCV.Workbench.Model;
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Algorithms
 {
@@ -26,14 +28,14 @@ namespace EmguCV.Workbench.Algorithms
                     RetrType.List,
                     ChainApproxMethod.ChainApproxSimple);
 
+                if (_showContours)
+                    annotatedImage.DrawPolyline(contours.ToArrayOfArray(), false, new Bgr(Color.LimeGreen));
+
                 var points = contours
                     .ToArrayOfArray()
                     .SelectMany(c => c)
                     .Select(p => new PointF(p.X, p.Y))
                     .ToArray();
-
-                foreach (var point in points)
-                    annotatedImage.Draw(new CircleF {Center = point, Radius = 1}, new Bgr(Color.Lime));
 
                 var convexHull = CvInvoke.ConvexHull(points);
 
@@ -44,6 +46,16 @@ namespace EmguCV.Workbench.Algorithms
 
                 data = new List<object> {new Contour(convexHull)};
             }
+        }
+
+        private bool _showContours;
+        [Category("Convex Hull")]
+        [PropertyOrder(0)]
+        [DisplayName(@"Show Contours")]
+        public bool ShowContours
+        {
+            get { return _showContours; }
+            set { Set(ref _showContours, value); }
         }
     }
 }

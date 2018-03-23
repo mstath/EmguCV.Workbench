@@ -34,7 +34,6 @@ namespace EmguCV.Workbench.Algorithms
         [PropertyOrder(0)]
         [DisplayName(@"Mode")]
         [Description(@"Retrieval mode.")]
-        [DefaultValue(RetrType.List)]
         public RetrType Mode
         {
             get { return _mode; }
@@ -46,7 +45,6 @@ namespace EmguCV.Workbench.Algorithms
         [PropertyOrder(1)]
         [DisplayName(@"Method")]
         [Description(@"Approximation method.")]
-        [DefaultValue(ChainApproxMethod.ChainApproxSimple)]
         public ChainApproxMethod Method
         {
             get { return _method; }
