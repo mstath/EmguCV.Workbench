@@ -14,8 +14,6 @@ namespace EmguCV.Workbench.Algorithms
 {
     public class BoundingRectangle : ImageAlgorithm
     {
-        public override int Order => 12;
-
         public override void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
         {
             base.Process(image, out annotatedImage, out data);

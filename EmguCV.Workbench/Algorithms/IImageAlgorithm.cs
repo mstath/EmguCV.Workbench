@@ -11,8 +11,6 @@ namespace EmguCV.Workbench.Algorithms
     {
         string Name { get; }
 
-        int Order { get; }
-
         void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data);
     }
 
@@ -27,9 +25,6 @@ namespace EmguCV.Workbench.Algorithms
     {
         [Browsable(false)]
         public string Name => Regex.Replace(GetType().Name, @"(\B[A-Z])", " $1");
-
-        [Browsable(false)]
-        public abstract int Order { get; }
 
         public virtual void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
         {

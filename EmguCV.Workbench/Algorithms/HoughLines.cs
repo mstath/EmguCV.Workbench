@@ -11,8 +11,6 @@ namespace EmguCV.Workbench.Algorithms
 {
     public class HoughLines : ImageAlgorithm
     {
-        public override int Order => 6;
-
         public override void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
         {
             base.Process(image, out annotatedImage, out data);

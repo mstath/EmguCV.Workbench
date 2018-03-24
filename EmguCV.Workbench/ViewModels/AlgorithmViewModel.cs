@@ -23,7 +23,8 @@ namespace EmguCV.Workbench.ViewModels
                     .Select(Activator.CreateInstance)
                     .Select(i => i as IImageAlgorithm)
                     .ToList()
-                    .OrderBy(a => a.Order);
+                    .OrderBy(a => a.GetType() == typeof(None) ? 0 : 1)
+                    .ThenBy(a => a.Name);
             SelectedAlgorithm = Algorithms.First();
         }
 

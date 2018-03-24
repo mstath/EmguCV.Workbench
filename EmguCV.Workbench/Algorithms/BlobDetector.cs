@@ -13,8 +13,6 @@ namespace EmguCV.Workbench.Algorithms
 {
     public class BlobDetector : ImageAlgorithm
     {
-        public override int Order => 5;
-
         private readonly SimpleBlobDetectorParams _params = new SimpleBlobDetectorParams();
 
         public override void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)

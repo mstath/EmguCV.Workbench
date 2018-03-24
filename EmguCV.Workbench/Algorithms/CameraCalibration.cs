@@ -18,8 +18,6 @@ namespace EmguCV.Workbench.Algorithms
 {
     public class CameraCalibration : ImageAlgorithm
     {
-        public override int Order => 20;
-
         private Task _calTask;
 
         public override void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
