@@ -36,4 +36,10 @@ namespace EmguCV.Workbench.Util
         Upright,
         Rotated
     }
+
+    public enum BoundingCircleType
+    {
+        Circle,
+        Ellipse
+    }
 }

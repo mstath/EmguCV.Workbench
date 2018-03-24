@@ -97,6 +97,9 @@ namespace EmguCV.Workbench.ViewModels
             foreach (var obj in objects.OfType<Segment>())
                 image.Draw(obj.GetSegment(), new Bgr(Color.Red), 1);
 
+            foreach (var obj in objects.OfType<RotBoxEllipse>())
+                image.Draw(obj.GetEllipse(), new Bgr(Color.Red));
+
             SetImage(image);
         }
 

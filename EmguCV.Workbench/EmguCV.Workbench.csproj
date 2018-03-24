@@ -74,6 +74,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Algorithms\BlobDetector.cs" />
+    <Compile Include="Algorithms\BoundingCircle.cs" />
     <Compile Include="Algorithms\BoundingRectangle.cs" />
     <Compile Include="Algorithms\CameraCalibration.cs" />
     <Compile Include="Algorithms\ConvexHull.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Algorithms\IImageAlgorithm.cs" />
     <Compile Include="Algorithms\None.cs" />
     <Compile Include="Algorithms\TemplateMatch.cs" />
+    <Compile Include="Model\RotBoxEllipse.cs" />
     <Compile Include="Processors\Denoise.cs" />
     <Compile Include="Processors\GaussianPyramid .cs" />
     <Compile Include="Processors\GrayScale.cs" />
