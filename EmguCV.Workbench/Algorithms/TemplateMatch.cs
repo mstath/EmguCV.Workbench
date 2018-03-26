@@ -5,6 +5,7 @@ using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using EmguCV.Workbench.Model;
+using EmguCV.Workbench.Util;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Algorithms
@@ -32,7 +33,7 @@ namespace EmguCV.Workbench.Algorithms
             Response = maxValues[0];
 
             var rect = new Rectangle(maxLocations[0], Template.Size);
-            annotatedImage.Draw(rect, new Bgr(Color.Red));
+            annotatedImage.Draw(rect, new Bgr(_annoColor.Color()), _lineThick);
             data = new List<object> {new Box(rect)};
         }
 

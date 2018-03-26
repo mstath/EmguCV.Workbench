@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Linq;
 using Emgu.CV;
 using Emgu.CV.Features2D;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
 using EmguCV.Workbench.Model;
+using EmguCV.Workbench.Util;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Algorithms
@@ -27,7 +27,7 @@ namespace EmguCV.Workbench.Algorithms
                     image,
                     kp,
                     annotatedImage,
-                    new Bgr(Color.Red),
+                    new Bgr(_annoColor.Color()),
                     Features2DToolbox.KeypointDrawType.DrawRichKeypoints);
 
                 data = new List<object>();
@@ -281,5 +281,8 @@ namespace EmguCV.Workbench.Algorithms
                 RaisePropertyChanged();
             }
         }
+
+        [Browsable(false)]
+        public override int LineThick { get; set; }
     }
 }

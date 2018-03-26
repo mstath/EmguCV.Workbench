@@ -42,7 +42,7 @@ namespace EmguCV.Workbench.Algorithms
                         continue;
 
                     var circle = new CircleF(new PointF(i, j), 1);
-                    annotatedImage.Draw(circle, new Bgr(Color.Red));
+                    annotatedImage.Draw(circle, new Bgr(_annoColor.Color()), _lineThick);
                     data.Add(new Circle(circle));
                 }
             }

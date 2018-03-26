@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Linq;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
 using EmguCV.Workbench.Model;
+using EmguCV.Workbench.Util;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Algorithms
@@ -21,7 +21,7 @@ namespace EmguCV.Workbench.Algorithms
             {
                 CvInvoke.FindContours(image.Convert<Gray, byte>(), contours, null, _mode, _method);
 
-                annotatedImage.DrawPolyline(contours.ToArrayOfArray(), false, new Bgr(Color.Red));
+                annotatedImage.DrawPolyline(contours.ToArrayOfArray(), false, new Bgr(_annoColor.Color()), _lineThick);
 
                 data = contours.ToArrayOfArray().Select(c => new Contour(c)).Cast<object>().ToList();
             }

@@ -8,6 +8,9 @@ using Emgu.CV.Structure;
 using Emgu.CV.Util;
 using EmguCV.Workbench.Model;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
+using System.Windows.Media;
+using EmguCV.Workbench.Util;
+using Color = System.Windows.Media.Color;
 
 namespace EmguCV.Workbench.Algorithms
 {
@@ -27,7 +30,7 @@ namespace EmguCV.Workbench.Algorithms
                     ChainApproxMethod.ChainApproxSimple);
 
                 if (_showContours)
-                    annotatedImage.DrawPolyline(contours.ToArrayOfArray(), false, new Bgr(Color.LimeGreen));
+                    annotatedImage.DrawPolyline(contours.ToArrayOfArray(), false, new Bgr(_contourColor.Color()), _lineThick);
 
                 var points = contours
                     .ToArrayOfArray()
@@ -40,7 +43,8 @@ namespace EmguCV.Workbench.Algorithms
                 annotatedImage.DrawPolyline(
                     convexHull.Select(Point.Round).ToArray(),
                     true, 
-                    new Bgr(Color.Red));
+                    new Bgr(_annoColor.Color()),
+                    _lineThick);
 
                 data = new List<object> {new Contour(convexHull)};
             }
@@ -54,6 +58,16 @@ namespace EmguCV.Workbench.Algorithms
         {
             get { return _showContours; }
             set { Set(ref _showContours, value); }
+        }
+
+        private Color _contourColor = Colors.LimeGreen;
+        [Category("Annotations")]
+        [PropertyOrder(101)]
+        [DisplayName(@"Contour Color")]
+        public virtual Color ContourColor
+        {
+            get { return _contourColor; }
+            set { Set(ref _contourColor, value); }
         }
     }
 }

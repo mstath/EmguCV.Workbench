@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using EmguCV.Workbench.Model;
+using EmguCV.Workbench.Util;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Algorithms
@@ -26,7 +26,7 @@ namespace EmguCV.Workbench.Algorithms
             data = new List<object>();
             foreach (var circle in circles[0])
             {
-                annotatedImage.Draw(circle, new Bgr(Color.Red));
+                annotatedImage.Draw(circle, new Bgr(_annoColor.Color()), _lineThick);
                 data.Add(new Circle(circle));
             }
         }

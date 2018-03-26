@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using EmguCV.Workbench.Model;
+using EmguCV.Workbench.Util;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Algorithms
@@ -28,7 +28,7 @@ namespace EmguCV.Workbench.Algorithms
             data = new List<object>();
             foreach (var line in lines[0])
             {
-                annotatedImage.Draw(line, new Bgr(Color.Red), 1);
+                annotatedImage.Draw(line, new Bgr(_annoColor.Color()), _lineThick);
                 data.Add(new Segment(line));
             }
         }

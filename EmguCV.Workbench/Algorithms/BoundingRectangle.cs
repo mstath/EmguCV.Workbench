@@ -9,6 +9,8 @@ using Emgu.CV.Util;
 using EmguCV.Workbench.Model;
 using EmguCV.Workbench.Util;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
+using System.Windows.Media;
+using Color = System.Windows.Media.Color;
 
 namespace EmguCV.Workbench.Algorithms
 {
@@ -36,7 +38,7 @@ namespace EmguCV.Workbench.Algorithms
         private void BoundContours(VectorOfVectorOfPoint contours, ref Image<Bgr, byte> annotatedImage, ref List<object> data)
         {
             if (_showContours)
-                annotatedImage.DrawPolyline(contours.ToArrayOfArray(), false, new Bgr(Color.LimeGreen));
+                annotatedImage.DrawPolyline(contours.ToArrayOfArray(), false, new Bgr(_contourColor.Color()), _lineThick);
 
             if (!_foreachContour)
             {
@@ -66,14 +68,14 @@ namespace EmguCV.Workbench.Algorithms
 
         private void SetRect(Rectangle rect, ref Image<Bgr, byte> annotatedImage, ref List<object> data)
         {
-            annotatedImage.Draw(rect, new Bgr(Color.Red));
+            annotatedImage.Draw(rect, new Bgr(_annoColor.Color()), _lineThick);
             data.Add(new Box(rect));
         }
 
         private void SetRect(RotatedRect rect, ref Image<Bgr, byte> annotatedImage, ref List<object> data)
         {
             var vertices = rect.GetVertices().Select(Point.Round).ToArray();
-            annotatedImage.DrawPolyline(vertices, true, new Bgr(Color.Red));
+            annotatedImage.DrawPolyline(vertices, true, new Bgr(_annoColor.Color()), _lineThick);
             data.Add(new RotatedBox(rect));
         }
 
@@ -107,6 +109,16 @@ namespace EmguCV.Workbench.Algorithms
         {
             get { return _showContours; }
             set { Set(ref _showContours, value); }
+        }
+
+        private Color _contourColor = Colors.LimeGreen;
+        [Category("Annotations")]
+        [PropertyOrder(101)]
+        [DisplayName(@"Contour Color")]
+        public virtual Color ContourColor
+        {
+            get { return _contourColor; }
+            set { Set(ref _contourColor, value); }
         }
     }
 }

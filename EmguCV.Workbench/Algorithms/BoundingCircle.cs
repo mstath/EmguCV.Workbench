@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Linq;
+using System.Windows.Media;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
@@ -36,7 +36,7 @@ namespace EmguCV.Workbench.Algorithms
         private void BoundContours(VectorOfVectorOfPoint contours, ref Image<Bgr, byte> annotatedImage, ref List<object> data)
         {
             if (_showContours)
-                annotatedImage.DrawPolyline(contours.ToArrayOfArray(), false, new Bgr(Color.LimeGreen));
+                annotatedImage.DrawPolyline(contours.ToArrayOfArray(), false, new Bgr(_contourColor.Color()), _lineThick);
 
             if (!_foreachContour)
             {
@@ -66,13 +66,13 @@ namespace EmguCV.Workbench.Algorithms
 
         private void SetCircle(CircleF circle, ref Image<Bgr, byte> annotatedImage, ref List<object> data)
         {
-            annotatedImage.Draw(circle, new Bgr(Color.Red));
+            annotatedImage.Draw(circle, new Bgr(_contourColor.Color()), _lineThick);
             data.Add(new Circle(circle));
         }
 
         private void SetEllipse(RotatedRect rect, ref Image<Bgr, byte> annotatedImage, ref List<object> data)
         {
-            annotatedImage.Draw(new Ellipse(rect), new Bgr(Color.Red));
+            annotatedImage.Draw(new Ellipse(rect), new Bgr(_contourColor.Color()), _lineThick);
             data.Add(new RotBoxEllipse(rect));
         }
 
@@ -106,6 +106,16 @@ namespace EmguCV.Workbench.Algorithms
         {
             get { return _showContours; }
             set { Set(ref _showContours, value); }
+        }
+
+        private Color _contourColor = Colors.LimeGreen;
+        [Category("Annotations")]
+        [PropertyOrder(101)]
+        [DisplayName(@"Contour Color")]
+        public virtual Color ContourColor
+        {
+            get { return _contourColor; }
+            set { Set(ref _contourColor, value); }
         }
     }
 }

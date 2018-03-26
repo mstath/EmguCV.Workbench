@@ -13,6 +13,7 @@ using Emgu.CV.Structure;
 using Emgu.CV.Util;
 using EmguCV.Workbench.Util;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
+using Color = System.Windows.Media.Color;
 
 namespace EmguCV.Workbench.Algorithms
 {
@@ -333,5 +334,11 @@ namespace EmguCV.Workbench.Algorithms
             get { return _snapDelay; }
             set { Set(ref _snapDelay, value); }
         }
+
+        [Browsable(false)]
+        public override Color AnnoColor { get; set; }
+
+        [Browsable(false)]
+        public override int LineThick { get; set; }
     }
 }
