@@ -73,6 +73,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Algorithms\BackgroundSubtraction.cs" />
     <Compile Include="Algorithms\BlobDetector.cs" />
     <Compile Include="Algorithms\BoundingCircle.cs" />
     <Compile Include="Algorithms\BoundingRectangle.cs" />

@@ -1,0 +1,82 @@
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Linq;
+using Emgu.CV;
+using Emgu.CV.Structure;
+using Emgu.CV.Util;
+using Emgu.CV.VideoSurveillance;
+using EmguCV.Workbench.Model;
+using EmguCV.Workbench.Util;
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
+
+namespace EmguCV.Workbench.Algorithms
+{
+    public class BackgroundSubtraction : ImageAlgorithm
+    {
+        private readonly BackgroundSubtractor _subtractor = new BackgroundSubtractorMOG2();
+        private readonly MotionHistory _motionHistory = new MotionHistory(1.0, 0.05, 0.5);
+        private readonly Mat _foregroundMask = new Mat();
+        private readonly Mat _segMask = new Mat();
+
+        public override void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
+        {
+            base.Process(image, out annotatedImage, out data);
+
+            _subtractor.Apply(image, _foregroundMask);
+
+            _motionHistory.Update(_foregroundMask);
+
+            switch (_bgSubImageType)
+            {
+                case BgSubImageType.FgMask:
+                    annotatedImage = _foregroundMask.ToImage<Bgr, byte>();
+                    break;
+                case BgSubImageType.Background:
+                    _subtractor.GetBackgroundImage(annotatedImage);
+                    break;
+                default:
+                    data = new List<object>();
+                    DrawMotion(ref annotatedImage, ref data);
+                    break;
+            }
+        }
+
+        private void DrawMotion(ref Image<Bgr, byte> annotatedImage, ref List<object> data)
+        {
+            using (var boundingRect = new VectorOfRect())
+            {
+                _motionHistory.GetMotionComponents(_segMask, boundingRect);
+                var rects = boundingRect.ToArray();
+
+                foreach (var rect in rects.Where(r => r.Width * r.Height >= _minArea))
+                {
+                    annotatedImage.Draw(rect, new Bgr(_annoColor.Color()), _lineThick);
+                    data.Add(new Box(rect));
+                }
+            }
+        }
+
+        private BgSubImageType _bgSubImageType = BgSubImageType.Motion;
+        [Category("Background Subtraction")]
+        [PropertyOrder(0)]
+        [DisplayName(@"Image Type")]
+        [Description(@"Select which image to view.")]
+        public BgSubImageType BgSubImageType
+        {
+            get { return _bgSubImageType; }
+            set { Set(ref _bgSubImageType, value); }
+        }
+
+        private double _minArea = 10000;
+        [Category("Background Subtraction")]
+        [PropertyOrder(1)]
+        [DisplayName(@"Min Area")]
+        [Description(@"The min area by which to consider a motion object.")]
+        public double MinArea
+        {
+            get { return _minArea; }
+            set { Set(ref _minArea, value); }
+        }
+    }
+}

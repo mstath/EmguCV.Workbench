@@ -42,4 +42,11 @@ namespace EmguCV.Workbench.Util
         Circle,
         Ellipse
     }
+
+    public enum BgSubImageType
+    {
+        Motion,
+        FgMask,
+        Background
+    }
 }
