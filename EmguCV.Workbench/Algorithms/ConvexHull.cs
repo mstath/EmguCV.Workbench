@@ -64,7 +64,7 @@ namespace EmguCV.Workbench.Algorithms
         [Category("Annotations")]
         [PropertyOrder(101)]
         [DisplayName(@"Contour Color")]
-        public virtual Color ContourColor
+        public Color ContourColor
         {
             get { return _contourColor; }
             set { Set(ref _contourColor, value); }

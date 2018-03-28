@@ -80,6 +80,7 @@
     <Compile Include="Algorithms\CameraCalibration.cs" />
     <Compile Include="Algorithms\ConvexHull.cs" />
     <Compile Include="Algorithms\CornerHarris.cs" />
+    <Compile Include="Algorithms\FaceDetection.cs" />
     <Compile Include="Algorithms\FindContours.cs" />
     <Compile Include="Algorithms\HoughCircles.cs" />
     <Compile Include="Algorithms\HoughLines.cs" />
@@ -211,6 +212,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\distorted chessboard.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\haarcascade_eye.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\haarcascade_frontalface_default.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
