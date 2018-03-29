@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
-using System.Windows.Media;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Features2D;
@@ -13,7 +12,6 @@ using Emgu.CV.XFeatures2D;
 using EmguCV.Workbench.Model;
 using EmguCV.Workbench.Util;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
-using Color = System.Windows.Media.Color;
 
 namespace EmguCV.Workbench.Algorithms
 {
@@ -22,9 +20,6 @@ namespace EmguCV.Workbench.Algorithms
         public override void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
         {
             base.Process(image, out annotatedImage, out data);
-
-            if (Template == null)
-                return;
 
             using (var detector = new SURF(300))
             using (var modelKeyPoints = new VectorOfKeyPoint())
@@ -48,12 +43,15 @@ namespace EmguCV.Workbench.Algorithms
                         annotatedImage,
                         imageKeyPoints,
                         annotatedImage,
-                        new Bgr(_keypointColor.Color()),
+                        new Bgr(_annoColor.Color()),
                         Features2DToolbox.KeypointDrawType.DrawRichKeypoints);
                     data = new List<object>();
                     data.AddRange(imageKeyPoints.ToArray().Select(k => new KeyPoint(k)));
                     return;
                 }
+
+                if (Template == null)
+                    return;
 
                 // get features from object
                 detector.DetectAndCompute(
@@ -117,16 +115,6 @@ namespace EmguCV.Workbench.Algorithms
         {
             get { return _showKeypoints; }
             set { Set(ref _showKeypoints, value); }
-        }
-
-        private Color _keypointColor = Colors.LimeGreen;
-        [Category("Annotations")]
-        [PropertyOrder(101)]
-        [DisplayName(@"Keypoint Color")]
-        public Color KeypointColor
-        {
-            get { return _keypointColor; }
-            set { Set(ref _keypointColor, value); }
         }
     }
 }
