@@ -23,6 +23,7 @@ namespace EmguCV.Workbench.ViewModels
         private ImageViewModel _imageVm;
         private string _imageFile;
         private const int SleepTime = 100;
+        private int _cpuUsage;
         private readonly Stopwatch _sw;
         private readonly object _lock = new object();
 
@@ -77,6 +78,8 @@ namespace EmguCV.Workbench.ViewModels
 
         private void StartEngine()
         {
+            StartCpuCounter();
+
             Task.Run(() =>
             {
                 while (true)
@@ -110,8 +113,22 @@ namespace EmguCV.Workbench.ViewModels
                         _imageVm.SetImage(_annotatedImage);
                         _imageVm.Data = data;
                         _imageVm.FrameSizeStatus = $"{_annotatedImage.Width} x {_annotatedImage.Height}";
-                        _imageVm.FrameTimeStatus = $"{_sw.ElapsedMilliseconds} ms";
+                        _imageVm.FrameTimeStatus = $"{_sw.ElapsedMilliseconds} ms, CPU {_cpuUsage}%";
                     }
+                }
+            });
+        }
+
+        private void StartCpuCounter()
+        {
+            var cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total", Environment.MachineName);
+
+            Task.Run(() =>
+            {
+                while (true)
+                {
+                    _cpuUsage = (int) cpuCounter.NextValue();
+                    Thread.Sleep(1000);
                 }
             });
         }
