@@ -49,4 +49,27 @@ namespace EmguCV.Workbench.Util
         FgMask,
         Background
     }
+
+    public enum DetectorType
+    {
+        //AgastFeatureDetector,
+        AKAZE,
+        Brisk,
+        FastDetector,
+        GFTTDetector,
+        KAZE,
+        MSERDetector,
+        ORBDetector,
+        //BoostDesc,
+        //BriefDescriptorExtractor,
+        //DAISY,
+        //Freak,
+        //LATCH,
+        //LUCID,
+        //MSDDetector,
+        SIFT,
+        StarDetector,
+        SURF,
+        //VGG
+    }
 }
