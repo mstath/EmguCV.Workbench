@@ -66,13 +66,13 @@ namespace EmguCV.Workbench.Algorithms
 
         private void SetCircle(CircleF circle, ref Image<Bgr, byte> annotatedImage, ref List<object> data)
         {
-            annotatedImage.Draw(circle, new Bgr(_contourColor.Color()), _lineThick);
+            annotatedImage.Draw(circle, new Bgr(_annoColor.Color()), _lineThick);
             data.Add(new Circle(circle));
         }
 
         private void SetEllipse(RotatedRect rect, ref Image<Bgr, byte> annotatedImage, ref List<object> data)
         {
-            annotatedImage.Draw(new Ellipse(rect), new Bgr(_contourColor.Color()), _lineThick);
+            annotatedImage.Draw(new Ellipse(rect), new Bgr(_annoColor.Color()), _lineThick);
             data.Add(new RotBoxEllipse(rect));
         }
 
