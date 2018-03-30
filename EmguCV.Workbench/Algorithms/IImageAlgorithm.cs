@@ -21,6 +21,8 @@ namespace EmguCV.Workbench.Algorithms
         Image<Bgr, byte> Template { get; }
 
         void SetTemplate(Image<Bgr, byte> template);
+
+        bool ClearTemplate { set; }
     }
 
     public abstract class ImageAlgorithm : ViewModelBase, IImageAlgorithm
@@ -63,6 +65,19 @@ namespace EmguCV.Workbench.Algorithms
         public virtual void SetTemplate(Image<Bgr, byte> template)
         {
             Template = template;
+        }
+
+        [Category("Template")]
+        [PropertyOrder(100)]
+        [DisplayName(@"Clear Template")]
+        public bool ClearTemplate
+        {
+            get { return false; }
+            set
+            {
+                if (value)
+                    Template = null;
+            }
         }
     }
 }
