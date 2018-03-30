@@ -31,7 +31,7 @@ namespace EmguCV.Workbench.Algorithms
             }
         }
 
-        private byte _cannyThreshold = 255;
+        private byte _cannyThreshold = 100;
         [Category("Hough Circles")]
         [PropertyOrder(0)]
         [DisplayName(@"Canny Threshold")]
@@ -42,7 +42,7 @@ namespace EmguCV.Workbench.Algorithms
             set { Set(ref _cannyThreshold, value); }
         }
 
-        private byte _accumulatorThreshold = 255;
+        private byte _accumulatorThreshold = 100;
         [Category("Hough Circles")]
         [PropertyOrder(1)]
         [DisplayName(@"Accumulator Threshold")]
@@ -53,7 +53,7 @@ namespace EmguCV.Workbench.Algorithms
             set { Set(ref _accumulatorThreshold, value); }
         }
 
-        private double _dp = 127;
+        private double _dp = 1;
         [Category("Hough Circles")]
         [PropertyOrder(2)]
         [DisplayName(@"dp")]
@@ -64,7 +64,7 @@ namespace EmguCV.Workbench.Algorithms
             set { Set(ref _dp, value); }
         }
 
-        private double _minDist = 1;
+        private double _minDist = 30;
         [Category("Hough Circles")]
         [PropertyOrder(3)]
         [DisplayName(@"Min Distance")]
