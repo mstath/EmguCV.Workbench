@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
@@ -21,12 +22,12 @@ namespace EmguCV.Workbench.Algorithms
         {
             base.Process(image, out annotatedImage, out data);
 
-            using (var detector = new SURF(300))
+            using (var detector = GetDetector())
             using (var modelKeyPoints = new VectorOfKeyPoint())
             using (var imageKeyPoints = new VectorOfKeyPoint())
             using (var modelDescriptors = new Mat())
             using (var imageDescriptors = new Mat())
-            using (var matcher = new FlannBasedMatcher(new AutotunedIndexParams(), new SearchParams()))
+            using (var matcher = new FlannBasedMatcher(GetIndexParams(), new SearchParams()))
             using (var matches = new VectorOfVectorOfDMatch())
             {
                 // get features from image
@@ -107,9 +108,66 @@ namespace EmguCV.Workbench.Algorithms
             }
         }
 
-        private bool _showKeypoints;
+        private Feature2D GetDetector()
+        {
+            switch (_detectorType)
+            {
+                case MatcherDetectorType.KAZE:
+                    return new KAZE();
+                case MatcherDetectorType.SIFT:
+                    return new SIFT();
+                case MatcherDetectorType.SURF:
+                    return new SURF(300);
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private IIndexParams GetIndexParams()
+        {
+            switch (_indexParamsType)
+            {
+                case MatcherIndexParamsType.Autotuned:
+                    return new AutotunedIndexParams();
+                case MatcherIndexParamsType.Composite:
+                    return new CompositeIndexParams();
+                case MatcherIndexParamsType.HierarchicalClustering:
+                    return new HierarchicalClusteringIndexParams();
+                case MatcherIndexParamsType.KdTree:
+                    return new KdTreeIndexParams();
+                case MatcherIndexParamsType.KMeans:
+                    return new KMeansIndexParams();
+                case MatcherIndexParamsType.Linear:
+                    return new LinearIndexParams();
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private MatcherDetectorType _detectorType = MatcherDetectorType.SURF;
         [Category("Feature Match (selectable)")]
         [PropertyOrder(0)]
+        [DisplayName(@"Detector Type")]
+        public MatcherDetectorType DetectorType
+        {
+            get { return _detectorType; }
+            set { Set(ref _detectorType, value); }
+        }
+
+        private MatcherIndexParamsType _indexParamsType = MatcherIndexParamsType.Autotuned;
+        [Category("Feature Match (selectable)")]
+        [PropertyOrder(1)]
+        [DisplayName(@"Index Params Type")]
+        [Description(@"Default index parameter types for Flann Based Matcher.")]
+        public MatcherIndexParamsType IndexParamsType
+        {
+            get { return _indexParamsType; }
+            set { Set(ref _indexParamsType, value); }
+        }
+
+        private bool _showKeypoints;
+        [Category("Feature Match (selectable)")]
+        [PropertyOrder(2)]
         [DisplayName(@"Show Image Keypoints")]
         public bool ShowKeypoints
         {

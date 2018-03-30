@@ -52,7 +52,6 @@ namespace EmguCV.Workbench.Util
 
     public enum DetectorType
     {
-        //AgastFeatureDetector,
         AKAZE,
         Brisk,
         FastDetector,
@@ -60,16 +59,25 @@ namespace EmguCV.Workbench.Util
         KAZE,
         MSERDetector,
         ORBDetector,
-        //BoostDesc,
-        //BriefDescriptorExtractor,
-        //DAISY,
-        //Freak,
-        //LATCH,
-        //LUCID,
-        //MSDDetector,
         SIFT,
         StarDetector,
         SURF,
-        //VGG
+    }
+
+    public enum MatcherDetectorType
+    {
+        SURF,
+        SIFT,
+        KAZE,
+    }
+
+    public enum MatcherIndexParamsType
+    {
+        Autotuned,
+        Composite,
+        HierarchicalClustering,
+        KdTree,
+        KMeans,
+        Linear,
     }
 }
