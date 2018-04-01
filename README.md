@@ -1,6 +1,7 @@
 # ABOUT #
 
 This is essentially a WPF GUI wrapper to several image processors and algorithms from [Emgu CV](http://www.emgu.com), the .NET wrapper to [OpenCV](https://opencv.org/).  Features include:
+
 - Image source from webcam or file
 - An image processing module where you can add and order several processors with parameters exposed
 - Several tutorial/example algorithms implemented with paremeters exposed
