@@ -27,7 +27,8 @@ namespace EmguCV.Workbench.Algorithms
             using (var imageKeyPoints = new VectorOfKeyPoint())
             using (var modelDescriptors = new Mat())
             using (var imageDescriptors = new Mat())
-            using (var matcher = new FlannBasedMatcher(GetIndexParams(), new SearchParams()))
+            using (var flannMatcher = new FlannBasedMatcher(GetIndexParams(), new SearchParams()))
+            using (var bfMatcher = new BFMatcher(_distanceType))
             using (var matches = new VectorOfVectorOfDMatch())
             {
                 // get features from image
@@ -63,13 +64,25 @@ namespace EmguCV.Workbench.Algorithms
                     false);
 
                 // match
-                matcher.Add(modelDescriptors);
-                matcher.KnnMatch(
-                    imageDescriptors,
-                    matches,
-                    2,
-                    null);
-
+                if (_matcherType == MatcherType.Flann)
+                {
+                    flannMatcher.Add(modelDescriptors);
+                    flannMatcher.KnnMatch(
+                        imageDescriptors,
+                        matches,
+                        2,
+                        null);
+                }
+                else
+                {
+                    bfMatcher.Add(modelDescriptors);
+                    bfMatcher.KnnMatch(
+                        imageDescriptors,
+                        matches,
+                        2,
+                        null);
+                }
+                
                 // find homography
                 using (var mask = new Mat(matches.Size, 1, DepthType.Cv8U, 1))
                 {
@@ -103,7 +116,7 @@ namespace EmguCV.Workbench.Algorithms
                     var rotRect = CvInvoke.MinAreaRect(pts);
 
                     annotatedImage.Draw(rotRect, new Bgr(_annoColor.Color()), _lineThick);
-                    data = new List<object> {new RotatedBox(rotRect)};
+                    data = new List<object> { new RotatedBox(rotRect) };
                 }
             }
         }
@@ -154,9 +167,19 @@ namespace EmguCV.Workbench.Algorithms
             set { Set(ref _detectorType, value); }
         }
 
-        private MatcherIndexParamsType _indexParamsType = MatcherIndexParamsType.Autotuned;
+        private MatcherType _matcherType = MatcherType.Flann;
         [Category("Feature Match (selectable)")]
         [PropertyOrder(1)]
+        [DisplayName(@"Matcher Type")]
+        public MatcherType MatcherType
+        {
+            get { return _matcherType; }
+            set { Set(ref _matcherType, value); }
+        }
+
+        private MatcherIndexParamsType _indexParamsType = MatcherIndexParamsType.Autotuned;
+        [Category("Feature Match (selectable)")]
+        [PropertyOrder(2)]
         [DisplayName(@"Index Params Type")]
         [Description(@"Default index parameter types for Flann Based Matcher.")]
         public MatcherIndexParamsType IndexParamsType
@@ -165,9 +188,20 @@ namespace EmguCV.Workbench.Algorithms
             set { Set(ref _indexParamsType, value); }
         }
 
+        private DistanceType _distanceType = DistanceType.L2;
+        [Category("Feature Match (selectable)")]
+        [PropertyOrder(3)]
+        [DisplayName(@"Distance Type")]
+        [Description(@"Distance type for BF Matcher.")]
+        public DistanceType DistanceType
+        {
+            get { return _distanceType; }
+            set { Set(ref _distanceType, value); }
+        }
+
         private bool _showKeypoints;
         [Category("Feature Match (selectable)")]
-        [PropertyOrder(2)]
+        [PropertyOrder(4)]
         [DisplayName(@"Show Image Keypoints")]
         public bool ShowKeypoints
         {

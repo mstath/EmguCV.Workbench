@@ -71,6 +71,12 @@ namespace EmguCV.Workbench.Util
         KAZE,
     }
 
+    public enum MatcherType
+    {
+        Flann,
+        BF,
+    }
+
     public enum MatcherIndexParamsType
     {
         Autotuned,
