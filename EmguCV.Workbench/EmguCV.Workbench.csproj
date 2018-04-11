@@ -91,6 +91,7 @@
     <Compile Include="Algorithms\OpticalCharacterRecognition.cs" />
     <Compile Include="Algorithms\TemplateMatch.cs" />
     <Compile Include="Model\RotBoxEllipse.cs" />
+    <Compile Include="Processors\ColorMap.cs" />
     <Compile Include="Processors\Compare.cs" />
     <Compile Include="Processors\Denoise.cs" />
     <Compile Include="Processors\Split.cs" />
