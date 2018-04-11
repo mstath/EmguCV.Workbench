@@ -93,6 +93,7 @@
     <Compile Include="Model\RotBoxEllipse.cs" />
     <Compile Include="Processors\Compare.cs" />
     <Compile Include="Processors\Denoise.cs" />
+    <Compile Include="Processors\Split.cs" />
     <Compile Include="Processors\GaussianPyramid .cs" />
     <Compile Include="Processors\GrayScale.cs" />
     <Compile Include="Processors\Undistort.cs" />
