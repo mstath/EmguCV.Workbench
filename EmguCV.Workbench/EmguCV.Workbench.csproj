@@ -94,6 +94,7 @@
     <Compile Include="Processors\ColorMap.cs" />
     <Compile Include="Processors\Compare.cs" />
     <Compile Include="Processors\Denoise.cs" />
+    <Compile Include="Processors\DetailEnhance.cs" />
     <Compile Include="Processors\Split.cs" />
     <Compile Include="Processors\GaussianPyramid .cs" />
     <Compile Include="Processors\GrayScale.cs" />
