@@ -7,6 +7,10 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Processors
 {
+    /// <summary>
+    /// Checks that image elements lie between two scalars.
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
     public class InRange : ImageProcessor
     {
         private Color _lower = Colors.Black;
@@ -14,7 +18,6 @@ namespace EmguCV.Workbench.Processors
         [PropertyOrder(0)]
         [DisplayName(@"Lower")]
         [Description(@"The inclusive lower limit of color value.")]
-        [DefaultValue(85)]
         public Color Lower
         {
             get { return _lower; }
@@ -26,7 +29,6 @@ namespace EmguCV.Workbench.Processors
         [PropertyOrder(1)]
         [DisplayName(@"Higher")]
         [Description(@"The inclusive upper limit of color value.")]
-        [DefaultValue(170)]
         public Color Higher
         {
             get { return _higher; }

@@ -25,6 +25,10 @@ namespace EmguCV.Workbench.Model
         public float EndY => _pixel.Length > 0 ? _pixel[_pixel.Length - 1].Y : float.NaN;
         public double Length => GetLength();
 
+        /// <summary>
+        /// Computes and sums the lengths of all sub-segments within a segment.
+        /// </summary>
+        /// <returns>The total length of the segment.</returns>
         private double GetLength()
         {
             var length = 0.0;

@@ -9,12 +9,19 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Algorithms
 {
+    /// <summary>
+    /// Finds lines in a binary image using the standard Hough transform.
+    /// https://docs.opencv.org/master/d9/db0/tutorial_hough_lines.html
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Algorithms.ImageAlgorithm" />
     public class HoughLines : ImageAlgorithm
     {
         public override void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
         {
             base.Process(image, out annotatedImage, out data);
 
+            // convert image to gray scale
+            // and get the lines
             var lines = image
                 .Convert<Gray, byte>()
                 .HoughLines(
@@ -25,7 +32,10 @@ namespace EmguCV.Workbench.Algorithms
                     _threshold,
                     _minLineWidth,
                     _gapBetweenLines);
+
             data = new List<object>();
+
+            // draw each line and add to data collection
             foreach (var line in lines[0])
             {
                 annotatedImage.Draw(line, new Bgr(_annoColor.Color()), _lineThick);

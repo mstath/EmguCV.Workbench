@@ -8,12 +8,19 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Algorithms
 {
+    /// <summary>
+    /// Finds circles in a grayscale image using the Hough transform.
+    /// https://docs.opencv.org/master/d4/d70/tutorial_hough_circle.html
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Algorithms.ImageAlgorithm" />
     public class HoughCircles : ImageAlgorithm
     {
         public override void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
         {
             base.Process(image, out annotatedImage, out data);
 
+            // convert image to gray scale
+            // and get the circles
             var circles = image
                 .Convert<Gray, byte>()
                 .HoughCircles(
@@ -23,7 +30,10 @@ namespace EmguCV.Workbench.Algorithms
                     _minDist,
                     _minRadius,
                     _maxRadius);
+
             data = new List<object>();
+
+            // draw each circle and add to data collection
             foreach (var circle in circles[0])
             {
                 annotatedImage.Draw(circle, new Bgr(_annoColor.Color()), _lineThick);

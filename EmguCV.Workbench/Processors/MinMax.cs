@@ -7,6 +7,10 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Processors
 {
+    /// <summary>
+    /// Find the elementwise minimum/maximum image.
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
     public class MinMax : ImageProcessor
     {
         private Color _value = Colors.Black;

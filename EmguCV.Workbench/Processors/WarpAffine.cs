@@ -10,6 +10,10 @@ using Color = System.Windows.Media.Color;
 
 namespace EmguCV.Workbench.Processors
 {
+    /// <summary>
+    /// Applies an affine transformation to the image.
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
     public class WarpAffine : ImageProcessor
     {
         private float _p1X;
@@ -144,11 +148,16 @@ namespace EmguCV.Workbench.Processors
 
         public override void Process(ref Image<Bgr, byte> image)
         {
+            // the source perspective
             var src = new[] {new PointF(0, 0), new PointF(image.Width, 0), new PointF(0, image.Height)};
+
+            // the transformed perspective
             var dst = new[] {new PointF(_p1X, _p1Y), new PointF(_p2X, _p2Y), new PointF(_p3X, _p3Y)};
 
+            // get the perspective transformation matrix
             using (var mat = CvInvoke.GetAffineTransform(src, dst))
             {
+                // apply the matrix
                 image = image.WarpAffine(
                     mat,
                     _width,

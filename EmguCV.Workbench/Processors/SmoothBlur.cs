@@ -6,6 +6,10 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Processors
 {
+    /// <summary>
+    /// Perform summation over a pixel width x height neighborhood with subsequent scaling by 1/(width x height).
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
     public class SmoothBlur : ImageProcessor
     {
         private int _width = 1;

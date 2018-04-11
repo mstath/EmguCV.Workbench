@@ -6,6 +6,10 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Processors
 {
+    /// <summary>
+    /// Smooth for median of size x size neighborhood.
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
     public class SmoothMedian : ImageProcessor
     {
         private int _size = 1;

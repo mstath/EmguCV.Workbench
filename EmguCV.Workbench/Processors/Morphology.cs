@@ -8,6 +8,10 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Processors
 {
+    /// <summary>
+    /// Perform advanced morphological transformations using erosion and dilation as basic operations.
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
     public class Morphology : ImageProcessor
     {
         private MorphOp _morphOp = MorphOp.Erode;
@@ -59,7 +63,6 @@ namespace EmguCV.Workbench.Processors
         [PropertyOrder(4)]
         [DisplayName(@"Anchor X")]
         [Description(@"Anchor position within the element. The value (-1, -1) means that the anchor is at the center.")]
-        [DefaultValue(-1)]
         public int AnchorX
         {
             get { return _anchorX; }
@@ -71,7 +74,6 @@ namespace EmguCV.Workbench.Processors
         [PropertyOrder(5)]
         [DisplayName(@"Anchor Y")]
         [Description(@"Anchor position within the element. The value (-1, -1) means that the anchor is at the center.")]
-        [DefaultValue(-1)]
         public int AnchorY
         {
             get { return _anchorY; }
@@ -83,7 +85,6 @@ namespace EmguCV.Workbench.Processors
         [PropertyOrder(6)]
         [DisplayName(@"Iterations")]
         [Description(@"Number of times erosion and dilation are applied.")]
-        [DefaultValue(1)]
         public int Iterations
         {
             get { return _iterations; }
@@ -92,8 +93,11 @@ namespace EmguCV.Workbench.Processors
 
         public override void Process(ref Image<Bgr, byte> image)
         {
+            // get the structuring element
             var element = CvInvoke.GetStructuringElement(_elementShape, new Size(_sizeWidth, _sizeHeight),
                 new Point(_anchorX, _anchorY));
+            
+            // apply morphology
             image = image.MorphologyEx(
                 _morphOp,
                 element,

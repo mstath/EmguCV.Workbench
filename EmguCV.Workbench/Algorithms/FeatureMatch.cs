@@ -16,6 +16,11 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Algorithms
 {
+    /// <summary>
+    /// Uses feature detection and matching to track selected objects.
+    /// https://docs.opencv.org/master/d7/dff/tutorial_feature_homography.html
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Algorithms.ImageTemplateAlgorithm" />
     public class FeatureMatch : ImageTemplateAlgorithm
     {
         public override void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
@@ -39,6 +44,7 @@ namespace EmguCV.Workbench.Algorithms
                     imageDescriptors,
                     false);
 
+                // optionally view image keypoints and return
                 if (_showKeypoints)
                 {
                     Features2DToolbox.DrawKeypoints(
@@ -52,6 +58,7 @@ namespace EmguCV.Workbench.Algorithms
                     return;
                 }
 
+                // do not proceed if there is no template
                 if (Template == null)
                     return;
 
@@ -63,7 +70,7 @@ namespace EmguCV.Workbench.Algorithms
                     modelDescriptors,
                     false);
 
-                // match
+                // perform match with selected matcher
                 if (_matcherType == MatcherType.Flann)
                 {
                     flannMatcher.Add(modelDescriptors);
@@ -88,23 +95,32 @@ namespace EmguCV.Workbench.Algorithms
                 {
                     Mat homography = null;
 
+                    // filter for unique matches
                     mask.SetTo(new MCvScalar(255));
                     Features2DToolbox.VoteForUniqueness(matches, 0.8, mask);
 
+                    // if 4 or more patches continue
                     var nonZeroCount = CvInvoke.CountNonZero(mask);
                     if (nonZeroCount >= 4)
                     {
+                        // filter for majority scale and rotation
                         nonZeroCount = Features2DToolbox.VoteForSizeAndOrientation(modelKeyPoints, imageKeyPoints,
                             matches, mask, 1.5, 20);
 
+                        // if 4 or more patches continue
                         if (nonZeroCount >= 4)
+                            // get the homography
                             homography = Features2DToolbox.GetHomographyMatrixFromMatchedFeatures(modelKeyPoints,
                                 imageKeyPoints, matches, mask, 2);
                     }
 
+                    // if no homography, return
                     if (homography == null) return;
 
+                    // initialize a rectangle of the template size
                     var rect = new Rectangle(Point.Empty, Template.Size);
+
+                    // create points array for the vertices of the template
                     var pts = new[]
                     {
                         new PointF(rect.Left, rect.Bottom),
@@ -112,15 +128,24 @@ namespace EmguCV.Workbench.Algorithms
                         new PointF(rect.Right, rect.Top),
                         new PointF(rect.Left, rect.Top)
                     };
+
+                    // transform the perspective of the points array based on the homography
+                    // and get a rotated rectangle for the homography
                     pts = CvInvoke.PerspectiveTransform(pts, homography);
                     var rotRect = CvInvoke.MinAreaRect(pts);
 
+                    // annotate the image and return the rotated rectangle model
                     annotatedImage.Draw(rotRect, new Bgr(_annoColor.Color()), _lineThick);
                     data = new List<object> { new RotatedBox(rotRect) };
                 }
             }
         }
 
+        /// <summary>
+        /// Gets a new instance of the selected detector.
+        /// </summary>
+        /// <returns>A new feature detector.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Throws exception for unrecognized selection.</exception>
         private Feature2D GetDetector()
         {
             switch (_detectorType)
@@ -136,6 +161,11 @@ namespace EmguCV.Workbench.Algorithms
             }
         }
 
+        /// <summary>
+        /// Gets an new instance of the selected index parameters for the Flann Based Matcher.
+        /// </summary>
+        /// <returns>A new index paremeter object.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Throws exception for unrecognized selection.</exception>
         private IIndexParams GetIndexParams()
         {
             switch (_indexParamsType)

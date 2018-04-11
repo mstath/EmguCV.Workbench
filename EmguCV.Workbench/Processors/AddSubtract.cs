@@ -7,6 +7,10 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Processors
 {
+    /// <summary>
+    /// Elementwise addition/subtraction of a color to the image.
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
     class AddSubtract : ImageProcessor
     {
         private Color _color = Colors.Black;

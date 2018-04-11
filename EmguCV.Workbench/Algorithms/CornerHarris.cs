@@ -9,31 +9,43 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Algorithms
 {
+    /// <summary>
+    /// Detects corners in an image.
+    /// https://docs.opencv.org/master/d4/d7d/tutorial_harris_detector.html
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Algorithms.ImageAlgorithm" />
     public class CornerHarris : ImageAlgorithm
     {
         public override void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
         {
             base.Process(image, out annotatedImage, out data);
 
+            // create image for the corners
             var corners = new Image<Gray, float>(image.Size);
 
+            // run the Harris corner detector against the image
             CvInvoke.CornerHarris(
                 image.Convert<Gray, byte>(),
                 corners,
                 _blockSize,
                 _apertureSize);
 
+            // normalize the image
             CvInvoke.Normalize(corners, corners);
 
+            // optionally show the corners image
             if (_viewCorners)
             {
                 annotatedImage = corners.Convert<Bgr, byte>();
                 return;
             }
 
+            // crate gray byte image from corners image
             var gray = corners.Convert<Gray, byte>();
             data = new List<object>();
 
+            // for each pixel annotate the corner if
+            // the inensity is beyond the threshold
             for (var j = 0; j < gray.Rows; j++)
             {
                 for (var i = 0; i < gray.Cols; i++)

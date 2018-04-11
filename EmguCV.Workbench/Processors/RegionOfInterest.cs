@@ -7,6 +7,10 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Processors
 {
+    /// <summary>
+    /// Set the ROI for the image with option to preserve scale.
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
     public class RegionOfInterest : ImageProcessor
     {
         private Rectangle _roi = new Rectangle(0, 0, 640, 480);
@@ -80,6 +84,8 @@ namespace EmguCV.Workbench.Processors
 
         public override void Process(ref Image<Bgr, byte> image)
         {
+            // if not preserving scale, just set the ROI property
+            // otherwise create image and superimpose ROI image
             if (!_preserveScale)
                 image.ROI = _roi;
             else

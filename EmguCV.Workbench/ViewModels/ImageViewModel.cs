@@ -21,12 +21,21 @@ namespace EmguCV.Workbench.ViewModels
         public EngineViewModel EngineVm { get; private set; }
         public AlgorithmViewModel AlgorithmVm { get; private set; }
 
+        /// <summary>
+        /// Initializes the image view model.
+        /// </summary>
         public void Initialize(EngineViewModel engineVm, AlgorithmViewModel algorithmVm)
         {
+            // set references to the other view models
             EngineVm = engineVm;
             AlgorithmVm = algorithmVm;
         }
 
+        /// <summary>
+        /// Converts and sets the image to be presented
+        /// in the bound WPF image object.
+        /// </summary>
+        /// <param name="annotatedImage">The image to be presented.</param>
         public void SetImage(Image<Bgr,byte> annotatedImage)
         {
             if (annotatedImage != null)
@@ -48,15 +57,23 @@ namespace EmguCV.Workbench.ViewModels
                 Image = null;
         }
 
+        /// <summary>
+        /// Grabs a template image from engine vm.
+        /// </summary>
+        /// <param name="rect">The ROI of the grabbed image.</param>
         public void GrabTemplate(Rectangle rect)
         {
             try
             {
+                // proceed if ROI is realistic
                 if (rect.Width < 2 || rect.Height < 2 || rect.X < 0 || rect.Y < 0)
                     return;
 
+                // clone last image from engine vm
                 var template = EngineVm.Image.Clone();
+                // set ROI on the clone
                 template.ROI = rect;
+                // set template on selected algorithm
                 (AlgorithmVm.SelectedAlgorithm as IImageTemplateAlgorithm)?.SetTemplate(template);
             }
             catch (Exception ex)
@@ -65,15 +82,24 @@ namespace EmguCV.Workbench.ViewModels
             }
         }
 
+        /// <summary>
+        /// Draws data objects onto image and presents
+        /// (for selected data objects in data grid).
+        /// </summary>
+        /// <param name="objects">The data objects.</param>
         public void DrawObjects(IList objects)
         {
+            // clone last image from engine vm
             var image = EngineVm.Image.Clone();
 
+            // create MKeyPoint[] if
+            // of type KeyPoint
             var keypoints = objects
                 .OfType<KeyPoint>()
                 .Select(o => o.GetKeyPoint())
                 .ToArray();
 
+            // draw selected keypoints
             Features2DToolbox
                 .DrawKeypoints(
                     image,
@@ -82,24 +108,31 @@ namespace EmguCV.Workbench.ViewModels
                     new Bgr(Color.Red),
                     Features2DToolbox.KeypointDrawType.DrawRichKeypoints);
 
+            // draw selected boxes
             foreach (var obj in objects.OfType<Box>())
                 image.Draw(obj.GetBox(), new Bgr(Color.Red));
 
+            // draw selected circles
             foreach (var obj in objects.OfType<Circle>())
                 image.Draw(obj.GetCircle(), new Bgr(Color.Red));
 
+            // draw selected contours
             foreach (var obj in objects.OfType<Contour>())
                 image.Draw(obj.GetContour(), new Bgr(Color.Red));
 
+            // draw selected ortated boxes
             foreach (var obj in objects.OfType<RotatedBox>())
                 image.Draw(obj.GetBox(), new Bgr(Color.Red), 1);
 
+            // draw selected segments
             foreach (var obj in objects.OfType<Segment>())
                 image.Draw(obj.GetSegment(), new Bgr(Color.Red), 1);
 
+            // draw selected ellipses
             foreach (var obj in objects.OfType<RotBoxEllipse>())
                 image.Draw(obj.GetEllipse(), new Bgr(Color.Red));
 
+            // present the annoated image
             SetImage(image);
         }
 

@@ -6,6 +6,14 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Processors
 {
+    /// <summary>
+    /// Calculates the image derivative by convolving the image with the appropriate kernel.
+    /// The Sobel operators combine Gaussian smoothing and differentiation so the result is more 
+    /// or less robust to the noise. Most often the function is called with 
+    /// (xorder=1, yorder=0, aperture_size=3) or (xorder=0, yorder=1, aperture_size=3) 
+    /// to calculate first x- or y- image derivative.
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
     public class Sobel : ImageProcessor
     {
         private SobelOrder _order;

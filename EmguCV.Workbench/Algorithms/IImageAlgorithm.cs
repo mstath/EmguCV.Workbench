@@ -9,19 +9,46 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Algorithms
 {
+    /// <summary>
+    /// Image algorithm interface.
+    /// </summary>
     public interface IImageAlgorithm
     {
+        /// <summary>
+        /// Gets the name of the algorithm.
+        /// </summary>
         string Name { get; }
 
+        /// <summary>
+        /// Runs the image through the algorithm and produces an annotated image of the results
+        /// as well as the raw data of the results.
+        /// </summary>
+        /// <param name="image">The image to run through the algorithm.</param>
+        /// <param name="annotatedImage">The annotated image of the algorithm results.</param>
+        /// <param name="data">The raw data of the algorithm results.</param>
         void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data);
     }
 
+    /// <summary>
+    /// Image algorithm interface supporting template image.
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Algorithms.IImageAlgorithm" />
     public interface IImageTemplateAlgorithm : IImageAlgorithm
     {
+        /// <summary>
+        /// Gets the template image for the algorithm.
+        /// </summary>
         Image<Bgr, byte> Template { get; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether to clear the template.
+        /// </summary>
         bool ClearTemplate { get; set; }
 
+        /// <summary>
+        /// Sets the template image for the algorithm.
+        /// </summary>
+        /// <param name="template">The template image to set.</param>
         void SetTemplate(Image<Bgr, byte> template);
     }
 

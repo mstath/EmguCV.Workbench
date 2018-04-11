@@ -6,10 +6,20 @@ using EmguCV.Workbench.Util;
 
 namespace EmguCV.Workbench.Processors
 {
+    /// <summary>
+    /// Image processor interface.
+    /// </summary>
     public interface IImageProcessor
     {
+        /// <summary>
+        /// Gets the name of the image processor.
+        /// </summary>
         string Name { get; }
 
+        /// <summary>
+        /// Applies the processor to the specified image.
+        /// </summary>
+        /// <param name="image">The image to process.</param>
         void Process(ref Image<Bgr, byte> image);
     }
 

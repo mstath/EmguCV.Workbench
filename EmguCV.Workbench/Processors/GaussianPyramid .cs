@@ -6,6 +6,11 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Processors
 {
+    /// <summary>
+    /// Performs upsampling and downsampling of Gaussian pyramid decomposition
+    /// for given number of steps.
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
     public class GaussianPyramid : ImageProcessor
     {
         private int _maxLevel;

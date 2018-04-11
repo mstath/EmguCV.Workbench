@@ -9,6 +9,12 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Processors
 {
+    /// <summary>
+    /// Transforms the image to compensate for radial and tangential lens distortion
+    /// using the camera matrix and distortion coefficients produced by the
+    /// Camera Calibratin algorithm.
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
     public class Undistort : ImageProcessor
     {
         private Mat _cameraMatrix = new Mat(3, 3, DepthType.Cv64F, 1);
@@ -26,8 +32,12 @@ namespace EmguCV.Workbench.Processors
             }
         }
 
+        /// <summary>
+        /// Loads the camera matrix and distortion coefficients from files.
+        /// </summary>
         private void LoadParemeters()
         {
+            // if they exist, load XML files with same name as properties
             var cmFile = $"{nameof(_cameraMatrix)}.xml";
             var dcFile = $"{nameof(_distCoeffs)}.xml";
             if (File.Exists(cmFile) && File.Exists(dcFile))
@@ -39,6 +49,7 @@ namespace EmguCV.Workbench.Processors
                     _cameraMatrix = (Mat) formatter.Deserialize(cmFs);
                     _distCoeffs = (Mat) formatter.Deserialize(dcFs);
                 }
+                // indicate parameters loaded
                 ParametersLoaded = true;
             }
         }

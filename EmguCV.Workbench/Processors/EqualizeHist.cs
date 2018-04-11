@@ -3,6 +3,10 @@ using Emgu.CV.Structure;
 
 namespace EmguCV.Workbench.Processors
 {
+    /// <summary>
+    /// Normalizes brightness and increases contrast of Gray Scale image.
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
     public class EqualizeHist : ImageProcessor
     {
         public override void Process(ref Image<Bgr, byte> image)

@@ -17,6 +17,12 @@ using Color = System.Windows.Media.Color;
 
 namespace EmguCV.Workbench.Algorithms
 {
+    /// <summary>
+    /// Performs camera calibraiton to determine camera matrix and distortion coefficients.
+    /// You can use the image Resources/distorted chessboard.png for demonstration.
+    /// https://docs.opencv.org/master/d6/d55/tutorial_table_of_content_calib3d.html
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Algorithms.ImageAlgorithm" />
     public class CameraCalibration : ImageAlgorithm
     {
         private Task _calTask;
@@ -25,18 +31,24 @@ namespace EmguCV.Workbench.Algorithms
         {
             base.Process(image, out annotatedImage, out data);
 
+            // if checked (and cal task not currently running)
+            // start asynchronous (auto) calibration task
             if (_performCal && _calTask?.Status != TaskStatus.Running)
             {
                 _calTask = new Task(PerformCalibration);
                 _calTask.Start();
             }
 
+            // search for corners and display
+            // can be processor intensive depending on size of target
             if (_find)
                 FindCorners(image, ref annotatedImage, new VectorOfPointF());
 
+            // manually snap image to use for calibration
             if (_snap)
                 SnapCalibrate(image, ref annotatedImage);
 
+            // undistort image after calibration
             if (_undistort)
             {
                 var undistoredImage = image.Clone();
@@ -45,28 +57,45 @@ namespace EmguCV.Workbench.Algorithms
             }
         }
 
+        /// <summary>
+        /// Performs the calibration in auto routine.
+        /// </summary>
         private void PerformCalibration()
         {
             Find = Undistort = false;
             while (!_undistort && _performCal)
             {
+                // delay between snaps
                 Thread.Sleep(TimeSpan.FromSeconds(_snapDelay));
                 Snap = true;
                 while (_snap && _performCal) { }
             }
+            // reset when done
             PerformCal = false;
         }
 
+        /// <summary>
+        /// Finds the corners/circles (depending on selected target type).
+        /// </summary>
+        /// <param name="image">The image to search.</param>
+        /// <param name="annotatedImage">The image with the corners/circles annotated.</param>
+        /// <param name="corners">Vector of the corners/circles.</param>
+        /// <returns>True if corers/circles found, false otherwise.</returns>
         private bool FindCorners(Image<Bgr, byte> image, ref Image<Bgr, byte> annotatedImage, VectorOfPointF corners)
         {
             var found = false;
+            // use simple blob detector if finding circle grid
             using (var det = new SimpleBlobDetector())
             {
+                // set the size of the pattern
                 var size = new Size(_cornersPerRow, _cornersPerCol);
+
+                // look for chessboard or circle grid
                 switch (_targetType)
                 {
                     case CalibTargetType.ChessBoard:
                         found = CvInvoke.FindChessboardCorners(image, size, corners);
+                        // if corners found, get sub-pixel accuracy
                         if (found)
                             CvInvoke.CornerSubPix(image.Convert<Gray, byte>(), corners, new Size(11, 11), new Size(-1, -1),
                                 new MCvTermCriteria(30, 0.1));
@@ -76,6 +105,8 @@ namespace EmguCV.Workbench.Algorithms
                         found = CvInvoke.FindCirclesGrid(image, size, corners, _circlesGridType, det);
                         break;
                 }
+
+                // draw the results
                 CvInvoke.DrawChessboardCorners(annotatedImage, size, corners, found);
                 return found;
             }
@@ -88,6 +119,11 @@ namespace EmguCV.Workbench.Algorithms
         private Mat _rvecs;
         private Mat _tvecs;
 
+        /// <summary>
+        /// Performs a single calibration execution.
+        /// </summary>
+        /// <param name="image">The image to search.</param>
+        /// <param name="annotatedImage">The image with the corners/circles annotated.</param>
         private void SnapCalibrate(Image<Bgr, byte> image, ref Image<Bgr, byte> annotatedImage)
         {
             try
@@ -156,8 +192,12 @@ namespace EmguCV.Workbench.Algorithms
             }
         }
 
+        /// <summary>
+        /// Saves the camera matrix and distortion coefficients to files.
+        /// </summary>
         private void SaveParameters()
         {
+            // save XML files with same name as properties
             var cmFile = $"{nameof(_cameraMatrix)}.xml";
             var dcFile = $"{nameof(_distCoeffs)}.xml";
             using (var cmFs = File.Open(cmFile, FileMode.Create, FileAccess.Write))

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Linq;
 using Emgu.CV;
 using Emgu.CV.Structure;
@@ -12,6 +11,12 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Algorithms
 {
+    /// <summary>
+    /// Background subtraction (BS) is a common and widely used technique for generating a foreground mask 
+    /// (namely, a binary image containing the pixels belonging to moving objects in the scene) by using static cameras.
+    /// https://docs.opencv.org/master/d1/dc5/tutorial_background_subtraction.html
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Algorithms.ImageAlgorithm" />
     public class BackgroundSubtraction : ImageAlgorithm
     {
         private readonly BackgroundSubtractor _subtractor = new BackgroundSubtractorMOG2();
@@ -23,10 +28,13 @@ namespace EmguCV.Workbench.Algorithms
         {
             base.Process(image, out annotatedImage, out data);
 
+            // apply the current image to the foreground mask
             _subtractor.Apply(image, _foregroundMask);
 
+            // add the mask to the motion history
             _motionHistory.Update(_foregroundMask);
 
+            // selector for desired image to be viewed
             switch (_bgSubImageType)
             {
                 case BgSubImageType.FgMask:
@@ -42,13 +50,20 @@ namespace EmguCV.Workbench.Algorithms
             }
         }
 
+        /// <summary>
+        /// Draws bounding rectangles around objects in motion.
+        /// </summary>
+        /// <param name="annotatedImage">The image with the bounded rectangles.</param>
+        /// <param name="data">The raw data for the bounding rectangles.</param>
         private void DrawMotion(ref Image<Bgr, byte> annotatedImage, ref List<object> data)
         {
             using (var boundingRect = new VectorOfRect())
             {
+                // get the motion components (and their bounding rectangles)
                 _motionHistory.GetMotionComponents(_segMask, boundingRect);
                 var rects = boundingRect.ToArray();
 
+                // draw the rectangles and populate the data
                 foreach (var rect in rects.Where(r => r.Width * r.Height >= _minArea))
                 {
                     annotatedImage.Draw(rect, new Bgr(_annoColor.Color()), _lineThick);

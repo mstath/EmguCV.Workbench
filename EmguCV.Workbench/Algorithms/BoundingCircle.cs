@@ -12,6 +12,12 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Algorithms
 {
+    /// <summary>
+    /// Create bounding circles/ellipses around contours.
+    /// https://docs.opencv.org/master/da/d0c/tutorial_bounding_rects_circles.html
+    /// https://docs.opencv.org/master/de/d62/tutorial_bounding_rotated_ellipses.html
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Algorithms.ImageAlgorithm" />
     public class BoundingCircle : ImageAlgorithm
     {
         public override void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
@@ -20,6 +26,7 @@ namespace EmguCV.Workbench.Algorithms
 
             using (var contours = new VectorOfVectorOfPoint())
             {
+                // find the contours for the image
                 CvInvoke.FindContours(
                     image.Convert<Gray, byte>(),
                     contours,
@@ -29,15 +36,24 @@ namespace EmguCV.Workbench.Algorithms
 
                 data = new List<object>();
 
+                // bound the contours
                 BoundContours(contours, ref annotatedImage, ref data);
             }
         }
 
+        /// <summary>
+        /// Bound the contours.
+        /// </summary>
+        /// <param name="contours">The contours.</param>
+        /// <param name="annotatedImage">The image with bound circles/ellipses.</param>
+        /// <param name="data">The raw data for the circles/ellipses.</param>
         private void BoundContours(VectorOfVectorOfPoint contours, ref Image<Bgr, byte> annotatedImage, ref List<object> data)
         {
+            // optionally show the contours
             if (_showContours)
                 annotatedImage.DrawPolyline(contours.ToArrayOfArray(), false, new Bgr(_contourColor.Color()), _lineThick);
 
+            // bound object for each contour or all contours
             if (!_foreachContour)
             {
                 var points = contours.ToArrayOfArray().SelectMany(p => p).ToArray();
@@ -48,6 +64,12 @@ namespace EmguCV.Workbench.Algorithms
                     FindCircle(new VectorOfPoint(contour), ref annotatedImage, ref data);
         }
 
+        /// <summary>
+        /// Finds the bounding circle/ellipse for the contour.
+        /// </summary>
+        /// <param name="contour">The contour.</param>
+        /// <param name="annotatedImage">The image with bound circles/ellipses.</param>
+        /// <param name="data">The raw data for the circles/ellipses.</param>
         private void FindCircle(VectorOfPoint contour, ref Image<Bgr, byte> annotatedImage, ref List<object> data)
         {
             switch (_circleType)
@@ -64,12 +86,24 @@ namespace EmguCV.Workbench.Algorithms
             }
         }
 
+        /// <summary>
+        /// Draws the bound circle.
+        /// </summary>
+        /// <param name="circle">The circle.</param>
+        /// <param name="annotatedImage">The image with bound circles/ellipses.</param>
+        /// <param name="data">The raw data for the circles/ellipses.</param>
         private void SetCircle(CircleF circle, ref Image<Bgr, byte> annotatedImage, ref List<object> data)
         {
             annotatedImage.Draw(circle, new Bgr(_annoColor.Color()), _lineThick);
             data.Add(new Circle(circle));
         }
 
+        /// <summary>
+        /// Draws the bound ellipse.
+        /// </summary>
+        /// <param name="rect">The rotated rectangle for the ellipse.</param>
+        /// <param name="annotatedImage">The image with bound circles/ellipses.</param>
+        /// <param name="data">The raw data for the circles/ellipses.</param>
         private void SetEllipse(RotatedRect rect, ref Image<Bgr, byte> annotatedImage, ref List<object> data)
         {
             annotatedImage.Draw(new Ellipse(rect), new Bgr(_annoColor.Color()), _lineThick);

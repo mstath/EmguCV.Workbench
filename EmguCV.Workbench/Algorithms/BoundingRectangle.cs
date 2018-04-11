@@ -14,6 +14,12 @@ using Color = System.Windows.Media.Color;
 
 namespace EmguCV.Workbench.Algorithms
 {
+    /// <summary>
+    /// Create bounding (rotated) rectangles around contours.
+    /// https://docs.opencv.org/master/da/d0c/tutorial_bounding_rects_circles.html
+    /// https://docs.opencv.org/master/de/d62/tutorial_bounding_rotated_ellipses.html
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Algorithms.ImageAlgorithm" />
     public class BoundingRectangle : ImageAlgorithm
     {
         public override void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
@@ -22,6 +28,7 @@ namespace EmguCV.Workbench.Algorithms
 
             using (var contours = new VectorOfVectorOfPoint())
             {
+                // find the contours for the image
                 CvInvoke.FindContours(
                     image.Convert<Gray, byte>(),
                     contours,
@@ -31,15 +38,24 @@ namespace EmguCV.Workbench.Algorithms
 
                 data = new List<object>();
 
+                // bound the contours
                 BoundContours(contours, ref annotatedImage, ref data);
             }
         }
 
+        /// <summary>
+        /// Bound the contours.
+        /// </summary>
+        /// <param name="contours">The contours.</param>
+        /// <param name="annotatedImage">The image with bound rectangles.</param>
+        /// <param name="data">The raw data for rectangles.</param>
         private void BoundContours(VectorOfVectorOfPoint contours, ref Image<Bgr, byte> annotatedImage, ref List<object> data)
         {
+            // optionally show the contours
             if (_showContours)
                 annotatedImage.DrawPolyline(contours.ToArrayOfArray(), false, new Bgr(_contourColor.Color()), _lineThick);
 
+            // bound object for each contour or all contours
             if (!_foreachContour)
             {
                 var points = contours.ToArrayOfArray().SelectMany(p => p).ToArray();
@@ -50,6 +66,12 @@ namespace EmguCV.Workbench.Algorithms
                     FindRect(new VectorOfPoint(contour), ref annotatedImage, ref data);
         }
 
+        /// <summary>
+        /// Finds the bounding rectangle for the contour.
+        /// </summary>
+        /// <param name="contour">The contour.</param>
+        /// <param name="annotatedImage">The image with bound rectangles.</param>
+        /// <param name="data">The raw data for rectangles.</param>
         private void FindRect(VectorOfPoint contour, ref Image<Bgr, byte> annotatedImage, ref List<object> data)
         {
             switch (_rectType)
@@ -66,12 +88,24 @@ namespace EmguCV.Workbench.Algorithms
             }
         }
 
+        /// <summary>
+        /// Draws the bound rectangle.
+        /// </summary>
+        /// <param name="rect">The rectangle.</param>
+        /// <param name="annotatedImage">The image with bound rectangles.</param>
+        /// <param name="data">The raw data for rectangles.</param>
         private void SetRect(Rectangle rect, ref Image<Bgr, byte> annotatedImage, ref List<object> data)
         {
             annotatedImage.Draw(rect, new Bgr(_annoColor.Color()), _lineThick);
             data.Add(new Box(rect));
         }
 
+        /// <summary>
+        /// Draws the bound rotated rectangle.
+        /// </summary>
+        /// <param name="rect">The rotated rectangle.</param>
+        /// <param name="annotatedImage">The image with bound rectangles.</param>
+        /// <param name="data">The raw data for rectangles.</param>
         private void SetRect(RotatedRect rect, ref Image<Bgr, byte> annotatedImage, ref List<object> data)
         {
             var vertices = rect.GetVertices().Select(Point.Round).ToArray();

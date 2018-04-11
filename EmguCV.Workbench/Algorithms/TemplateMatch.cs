@@ -10,17 +10,25 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Algorithms
 {
+    /// <summary>
+    /// Match a slected template against the image.
+    /// https://docs.opencv.org/master/de/da9/tutorial_template_matching.html
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Algorithms.ImageTemplateAlgorithm" />
     public class TemplateMatch : ImageTemplateAlgorithm
     {
         public override void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
         {
             base.Process(image, out annotatedImage, out data);
 
+            // return if no template
             if (Template == null)
                 return;
 
+            // match template
             var result = image.MatchTemplate(Template, _method);
 
+            // optionally view the results image and return
             if (_viewResult)
             {
                 annotatedImage = result.Convert<Bgr, byte>();
@@ -29,9 +37,12 @@ namespace EmguCV.Workbench.Algorithms
 
             double[] minValues, maxValues;
             Point[] minLocations, maxLocations;
+
+            // find min/max values/locaitons from result image
             result.MinMax(out minValues, out maxValues, out minLocations, out maxLocations);
             Response = maxValues[0];
 
+            // draw bounding rectangle around matched template in image
             var rect = new Rectangle(maxLocations[0], Template.Size);
             annotatedImage.Draw(rect, new Bgr(_annoColor.Color()), _lineThick);
             data = new List<object> {new Box(rect)};

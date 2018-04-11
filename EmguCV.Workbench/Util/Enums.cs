@@ -2,12 +2,18 @@
 
 namespace EmguCV.Workbench.Util
 {
+    /// <summary>
+    /// Selector for binary threshold method.
+    /// </summary>
     public enum ThreshType
     {
         Binary = ThresholdType.Binary,
         BinaryInv = ThresholdType.BinaryInv
     }
 
+    /// <summary>
+    /// Selector for border type for warp processors.
+    /// </summary>
     public enum BordType
     {
         Constant = BorderType.Constant,
@@ -19,30 +25,45 @@ namespace EmguCV.Workbench.Util
         Transparent = BorderType.Constant,
     }
 
+    /// <summary>
+    /// Selector for target type for camera calibration.
+    /// </summary>
     public enum CalibTargetType
     {
         ChessBoard,
         CirclesGrid
     }
 
+    /// <summary>
+    /// Selector for order type for Sobel processor.
+    /// </summary>
     public enum SobelOrder
     {
         X,
         Y
     }
 
+    /// <summary>
+    /// Selector for bounding rectangle type.
+    /// </summary>
     public enum BoundingRectType
     {
         Upright,
         Rotated
     }
 
+    /// <summary>
+    /// Selector for bounding circle or ellipse.
+    /// </summary>
     public enum BoundingCircleType
     {
         Circle,
         Ellipse
     }
 
+    /// <summary>
+    /// Selector for resultant image of background subtraction algorithm.
+    /// </summary>
     public enum BgSubImageType
     {
         Motion,
@@ -50,6 +71,9 @@ namespace EmguCV.Workbench.Util
         Background
     }
 
+    /// <summary>
+    /// Selector for feature detection type.
+    /// </summary>
     public enum DetectorType
     {
         AKAZE,
@@ -64,6 +88,9 @@ namespace EmguCV.Workbench.Util
         SURF,
     }
 
+    /// <summary>
+    /// Selector for feature detection type for feature match algorithm.
+    /// </summary>
     public enum MatcherDetectorType
     {
         SURF,
@@ -71,12 +98,18 @@ namespace EmguCV.Workbench.Util
         KAZE,
     }
 
+    /// <summary>
+    /// Selector for feature matcher type.
+    /// </summary>
     public enum MatcherType
     {
         Flann,
         BF,
     }
 
+    /// <summary>
+    /// Selector for index parameter type to be used by Flann based matcher.
+    /// </summary>
     public enum MatcherIndexParamsType
     {
         Autotuned,

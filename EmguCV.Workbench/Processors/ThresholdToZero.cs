@@ -7,6 +7,11 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Processors
 {
+    /// <summary>
+    /// Non-inverted: threshold the image such that dst(x,y) = src(x,y) if src(x,y) > threshold, otherwise 0.
+    /// Inverted: threshold the image such that dst(x,y) = 0 if src(x,y) > threshold, otherwise src(x,y).
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
     public class ThresholdToZero : ImageProcessor
     {
         private Color _threshold = Colors.Black;

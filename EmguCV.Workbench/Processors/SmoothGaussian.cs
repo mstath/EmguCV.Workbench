@@ -6,6 +6,10 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Processors
 {
+    /// <summary>
+    /// Perform Gaussian Smoothing for kernelSize x kernelSize neighborhood.
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
     public class SmoothGaussian : ImageProcessor
     {
         private int _kernelSize = 1;
@@ -13,7 +17,6 @@ namespace EmguCV.Workbench.Processors
         [PropertyOrder(0)]
         [DisplayName(@"Kernel Size")]
         [Description(@"The size of the Gaussian kernel.")]
-        [DefaultValue(1)]
         public int KernelSize
         {
             get { return _kernelSize; }

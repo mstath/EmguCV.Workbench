@@ -6,6 +6,10 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Processors
 {
+    /// <summary>
+    /// Applies convolution (Sobel) filters to create derivitive image.
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
     public class Derivitive : ImageProcessor
     {
         private int _order = 1;
@@ -30,13 +34,28 @@ namespace EmguCV.Workbench.Processors
             set { Set(ref _apertureSize, value.ClampOdd(_apertureSize, 1, 31)); }
         }
 
+        private bool _invert = true;
+        [Category("Derivitive")]
+        [PropertyOrder(2)]
+        [DisplayName(@"Invert")]
+        public bool Invert
+        {
+            get { return _invert; }
+            set { Set(ref _invert, value); }
+        }
+
         public override void Process(ref Image<Bgr, byte> image)
         {
+            // the gradient image in x
             var gradX = image.Sobel(_order, 0, _apertureSize).ConvertScale<byte>(1, 0);
+            // the gradient image in y
             var gradY = image.Sobel(0, _order, _apertureSize).ConvertScale<byte>(1, 0);
             var grad = new Image<Bgr, byte>(image.Width, image.Height);
+            // blend the gradient images
             CvInvoke.AddWeighted(gradX, 0.5, gradY, 0.5, 1.0, grad);
-            CvInvoke.BitwiseNot(grad, grad);
+            // invert the image
+            if (_invert)
+                CvInvoke.BitwiseNot(grad, grad);
             image = grad.Convert<Bgr, byte>();
         }
     }

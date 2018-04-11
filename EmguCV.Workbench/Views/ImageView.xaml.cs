@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using EmguCV.Workbench.Algorithms;
-using EmguCV.Workbench.Model;
 using EmguCV.Workbench.ViewModels;
 
 
@@ -31,10 +29,11 @@ namespace EmguCV.Workbench.Views
 
         private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            
+            // only init drag-select for template algorithms
             if (!(_viewModel?.AlgorithmVm?.SelectedAlgorithm is IImageTemplateAlgorithm))
                 return;
 
+            // init parameters, freeze frame
             _startPoint = e.MouseDevice.GetPosition(Canvas);
             _scale.X = _viewModel.Image.Width / Image.RenderSize.Width;
             _scale.Y = _viewModel.Image.Height / Image.RenderSize.Height;
@@ -48,14 +47,17 @@ namespace EmguCV.Workbench.Views
             if (!_isDragging)
                 return;
 
+            // set the start point
             var pos = e.MouseDevice.GetPosition(Canvas);
             var x = Math.Min(pos.X, _startPoint.X);
             var y = Math.Min(pos.Y, _startPoint.Y);
             var w = Math.Abs(pos.X - _startPoint.X);
             var h = Math.Abs(pos.Y - _startPoint.Y);
 
+            // remove previous drag-select box
             Canvas.Children.Remove(_box);
 
+            // create new drag-select box
             _box = new Rectangle
             {
                 Width = w,
@@ -65,11 +67,15 @@ namespace EmguCV.Workbench.Views
                 StrokeDashArray = new DoubleCollection(new List<double> { 4, 4 })
             };
 
+            // set relative start point of box on canvas
             Canvas.SetLeft(_box, x);
             Canvas.SetTop(_box, y);
 
+            // add the box
             Canvas.Children.Add(_box);
 
+            // if mouse released, grab template from scaled box,
+            // remove grab-select box, and unfreeze frame
             if (e.LeftButton == MouseButtonState.Released)
             {
                 _viewModel.GrabTemplate(
@@ -87,6 +93,7 @@ namespace EmguCV.Workbench.Views
 
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            // if frame is frozen, draw selected objects and present image
             if (_viewModel.EngineVm.IsFreezeFrame && e.AddedItems.Count > 0)
                 _viewModel.DrawObjects(DataGrid.SelectedItems);
         }

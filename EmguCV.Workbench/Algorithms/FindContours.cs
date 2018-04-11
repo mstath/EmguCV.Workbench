@@ -11,6 +11,11 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Algorithms
 {
+    /// <summary>
+    /// Finds contours for an image.
+    /// https://docs.opencv.org/master/df/d0d/tutorial_find_contours.html
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Algorithms.ImageAlgorithm" />
     public class FindContours : ImageAlgorithm
     {
         public override void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
@@ -19,10 +24,13 @@ namespace EmguCV.Workbench.Algorithms
 
             using (var contours = new VectorOfVectorOfPoint())
             {
+                // find the contours for an image
                 CvInvoke.FindContours(image.Convert<Gray, byte>(), contours, null, _mode, _method);
 
+                // draw the contours
                 annotatedImage.DrawPolyline(contours.ToArrayOfArray(), false, new Bgr(_annoColor.Color()), _lineThick);
 
+                // return collection of contours
                 data = contours.ToArrayOfArray().Select(c => new Contour(c)).Cast<object>().ToList();
             }
         }

@@ -11,6 +11,10 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Algorithms
 {
+    /// <summary>
+    /// Simple blob detector algorithm.
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Algorithms.ImageAlgorithm" />
     public class BlobDetector : ImageAlgorithm
     {
         private readonly SimpleBlobDetectorParams _params = new SimpleBlobDetectorParams();
@@ -22,7 +26,10 @@ namespace EmguCV.Workbench.Algorithms
             using (var dt = new SimpleBlobDetector(_params))
             using (var kp = new VectorOfKeyPoint())
             {
+                // detect the blobs
                 dt.DetectRaw(image, kp);
+
+                // draw the blobs
                 Features2DToolbox.DrawKeypoints(
                     image,
                     kp,
@@ -30,6 +37,7 @@ namespace EmguCV.Workbench.Algorithms
                     new Bgr(_annoColor.Color()),
                     Features2DToolbox.KeypointDrawType.DrawRichKeypoints);
 
+                // populate the data
                 data = new List<object>();
                 data.AddRange(kp.ToArray().Select(k => new KeyPoint(k)));
             }

@@ -7,6 +7,10 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Processors
 {
+    /// <summary>
+    /// Threshold the image such that dst(x,y) = threshold if src(x,y) > threshold, otherwise src(x,y).
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
     public class ThresholdTrunc : ImageProcessor
     {
         private Color _threshold = Colors.White;

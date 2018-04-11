@@ -8,6 +8,13 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Processors
 {
+    /// <summary>
+    /// Transforms grayscale image to binary image. Threshold calculated individually for each pixel.
+    /// For the method CV_ADAPTIVE_THRESH_MEAN_C it is a mean of blockSize x blockSize pixel neighborhood, 
+    /// subtracted by param1. For the method CV_ADAPTIVE_THRESH_GAUSSIAN_C it is a weighted sum (gaussian) 
+    /// of blockSize x blockSize pixel neighborhood, subtracted by param1.
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
     public class ThresholdAdaptive : ImageProcessor
     {
         private Color _maxValue = Colors.White;

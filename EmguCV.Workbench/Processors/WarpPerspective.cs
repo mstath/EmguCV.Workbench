@@ -10,6 +10,10 @@ using Color = System.Windows.Media.Color;
 
 namespace EmguCV.Workbench.Processors
 {
+    /// <summary>
+    /// Applies a perspective transformation to the image.
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
     class WarpPerspective : ImageProcessor
     {
         private float _p1X;
@@ -166,6 +170,7 @@ namespace EmguCV.Workbench.Processors
 
         public override void Process(ref Image<Bgr, byte> image)
         {
+            // the un-warped perspective
             var src = new[]
             {
                 new PointF(0, 0),
@@ -173,6 +178,8 @@ namespace EmguCV.Workbench.Processors
                 new PointF(image.Width, image.Height),
                 new PointF(0, image.Height)
             };
+            
+            // the warped perspective
             var dst = new[]
             {
                 new PointF(_p1X, _p1Y),
@@ -181,8 +188,10 @@ namespace EmguCV.Workbench.Processors
                 new PointF(_p4X, _p4Y)
             };
 
+            // get the perspective transformation matrix
             using (var mat = CvInvoke.GetPerspectiveTransform(src, dst))
             {
+                // apply the matrix
                 CvInvoke.WarpPerspective(
                     image,
                     image,

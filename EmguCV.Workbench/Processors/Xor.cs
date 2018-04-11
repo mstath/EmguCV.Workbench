@@ -7,6 +7,10 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Processors
 {
+    /// <summary>
+    /// Perform a binary XOR operation with some color.
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
     public class Xor : ImageProcessor
     {
         private Color _color = Colors.Black;
@@ -14,7 +18,6 @@ namespace EmguCV.Workbench.Processors
         [PropertyOrder(0)]
         [DisplayName(@"Color")]
         [Description(@"The value for the XOR operation.")]
-        [DefaultValue(127)]
         public Color Color
         {
             get { return _color; }

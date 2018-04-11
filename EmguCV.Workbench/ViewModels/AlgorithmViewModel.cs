@@ -13,9 +13,12 @@ namespace EmguCV.Workbench.ViewModels
     {
         public AlgorithmViewModel()
         {
+            // do not execute if in design mode
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
                 return;
 
+            // populate collection of instantiated image algorithms
+            // and set the initial selected algorithm to first (None)
             Algorithms =
                 Assembly.GetExecutingAssembly()
                     .GetTypes()

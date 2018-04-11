@@ -6,6 +6,11 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Processors
 {
+    /// <summary>
+    /// Erodes image using a 3x3 rectangular structuring element for a
+    /// given number of iterations.
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
     public class Erode : ImageProcessor
     {
         private int _iterations;

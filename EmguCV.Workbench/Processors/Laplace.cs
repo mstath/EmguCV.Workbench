@@ -6,6 +6,11 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace EmguCV.Workbench.Processors
 {
+    /// <summary>
+    /// Calculates Laplacian of the image by summing second x- and y- derivatives calculated using Sobel operator. 
+    /// Specifying aperture_size=1 gives the fastest variant that is equal to convolving the image with the following kernel: |0 1 0| |1 -4 1| |0 1 0|.
+    /// </summary>
+    /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
     public class Laplace : ImageProcessor
     {
         private int _apertureSize = 1;
