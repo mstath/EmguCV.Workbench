@@ -98,6 +98,7 @@
     <Compile Include="Processors\Split.cs" />
     <Compile Include="Processors\GaussianPyramid .cs" />
     <Compile Include="Processors\GrayScale.cs" />
+    <Compile Include="Processors\Stylization.cs" />
     <Compile Include="Processors\Undistort.cs" />
     <Compile Include="Processors\WarpPerspective.cs" />
     <Compile Include="Util\Enums.cs" />
