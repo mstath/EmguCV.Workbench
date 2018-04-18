@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text.RegularExpressions;
 using System.Windows.Media;
 using Emgu.CV;
 using Emgu.CV.Structure;
@@ -14,11 +13,6 @@ namespace EmguCV.Workbench.Algorithms
     /// </summary>
     public interface IImageAlgorithm
     {
-        /// <summary>
-        /// Gets the name of the algorithm.
-        /// </summary>
-        string Name { get; }
-
         /// <summary>
         /// Runs the image through the algorithm and produces an annotated image of the results
         /// as well as the raw data of the results.
@@ -54,13 +48,15 @@ namespace EmguCV.Workbench.Algorithms
 
     public abstract class ImageAlgorithm : ViewModelBase, IImageAlgorithm
     {
-        [Browsable(false)]
-        public string Name => Regex.Replace(GetType().Name, @"(\B[A-Z])", " $1");
-
         public virtual void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)
         {
             data = null;
             annotatedImage = image.Clone();
+        }
+
+        public override string ToString()
+        {
+            return GetType().Name;
         }
 
         protected Color _annoColor = Colors.Red;

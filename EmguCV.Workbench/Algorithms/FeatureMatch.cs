@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Drawing;
 using System.Linq;
 using Emgu.CV;
@@ -21,6 +22,7 @@ namespace EmguCV.Workbench.Algorithms
     /// https://docs.opencv.org/master/d7/dff/tutorial_feature_homography.html
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Algorithms.ImageTemplateAlgorithm" />
+    [Export(typeof(IImageAlgorithm))]
     public class FeatureMatch : ImageTemplateAlgorithm
     {
         public override void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)

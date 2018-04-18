@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using Emgu.CV;
 using Emgu.CV.OCR;
 using Emgu.CV.Structure;
@@ -12,6 +13,7 @@ namespace EmguCV.Workbench.Algorithms
     /// Parse text from image using Tesseract OCR engine.
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Algorithms.ImageAlgorithm" />
+    [Export(typeof(IImageAlgorithm))]
     public class OpticalCharacterRecognition : ImageAlgorithm
     {
         private readonly Tesseract _ocr = new Tesseract(Environment.CurrentDirectory + @"\tessdata", "eng",

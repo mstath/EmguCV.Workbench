@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Windows.Media;
 using Emgu.CV;
 using Emgu.CV.Structure;
@@ -11,6 +12,7 @@ namespace EmguCV.Workbench.Processors
     /// Threshold the image such that dst(x,y) = threshold if src(x,y) > threshold, otherwise src(x,y).
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
+    [Export(typeof(IImageProcessor))]
     public class ThresholdTrunc : ImageProcessor
     {
         private Color _threshold = Colors.White;

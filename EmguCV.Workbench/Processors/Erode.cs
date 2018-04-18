@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.Composition;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using EmguCV.Workbench.Util;
@@ -11,6 +12,7 @@ namespace EmguCV.Workbench.Processors
     /// given number of iterations.
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
+    [Export(typeof(IImageProcessor))]
     public class Erode : ImageProcessor
     {
         private int _iterations;

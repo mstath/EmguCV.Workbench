@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Windows.Media;
 using Emgu.CV;
 using Emgu.CV.Structure;
@@ -11,6 +12,7 @@ namespace EmguCV.Workbench.Processors
     /// Performs binary AND operation with some color.
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
+    [Export(typeof(IImageProcessor))]
     public class And : ImageProcessor
     {
         private Color _color = Colors.White;

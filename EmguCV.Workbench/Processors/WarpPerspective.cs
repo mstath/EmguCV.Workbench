@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Drawing;
 using System.Windows.Media;
 using Emgu.CV;
@@ -14,6 +15,7 @@ namespace EmguCV.Workbench.Processors
     /// Applies a perspective transformation to the image.
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
+    [Export(typeof(IImageProcessor))]
     class WarpPerspective : ImageProcessor
     {
         private float _p1X;

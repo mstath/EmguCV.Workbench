@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Drawing;
 using System.Windows.Media;
 using Emgu.CV;
@@ -14,6 +15,7 @@ namespace EmguCV.Workbench.Processors
     /// Applies an affine transformation to the image.
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
+    [Export(typeof(IImageProcessor))]
     public class WarpAffine : ImageProcessor
     {
         private float _p1X;

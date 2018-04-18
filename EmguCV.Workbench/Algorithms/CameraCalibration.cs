@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Drawing;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -23,6 +24,7 @@ namespace EmguCV.Workbench.Algorithms
     /// https://docs.opencv.org/master/d6/d55/tutorial_table_of_content_calib3d.html
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Algorithms.ImageAlgorithm" />
+    [Export(typeof(IImageAlgorithm))]
     public class CameraCalibration : ImageAlgorithm
     {
         private Task _calTask;

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Linq;
 using Emgu.CV;
 using Emgu.CV.Features2D;
@@ -15,6 +16,7 @@ namespace EmguCV.Workbench.Algorithms
     /// Simple blob detector algorithm.
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Algorithms.ImageAlgorithm" />
+    [Export(typeof(IImageAlgorithm))]
     public class BlobDetector : ImageAlgorithm
     {
         private readonly SimpleBlobDetectorParams _params = new SimpleBlobDetectorParams();

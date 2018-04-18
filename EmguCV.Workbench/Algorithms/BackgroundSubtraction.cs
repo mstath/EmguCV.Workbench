@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Linq;
 using Emgu.CV;
 using Emgu.CV.Structure;
@@ -17,6 +18,7 @@ namespace EmguCV.Workbench.Algorithms
     /// https://docs.opencv.org/master/d1/dc5/tutorial_background_subtraction.html
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Algorithms.ImageAlgorithm" />
+    [Export(typeof(IImageAlgorithm))]
     public class BackgroundSubtraction : ImageAlgorithm
     {
         private readonly BackgroundSubtractor _subtractor = new BackgroundSubtractorMOG2();

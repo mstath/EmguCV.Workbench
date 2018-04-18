@@ -1,4 +1,5 @@
-﻿using Emgu.CV;
+﻿using System.ComponentModel.Composition;
+using Emgu.CV;
 using Emgu.CV.Structure;
 
 namespace EmguCV.Workbench.Processors
@@ -7,6 +8,7 @@ namespace EmguCV.Workbench.Processors
     /// Normalizes brightness and increases contrast of Gray Scale image.
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
+    [Export(typeof(IImageProcessor))]
     public class EqualizeHist : ImageProcessor
     {
         public override void Process(ref Image<Bgr, byte> image)

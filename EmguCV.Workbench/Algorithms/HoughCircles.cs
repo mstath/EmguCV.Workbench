@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using EmguCV.Workbench.Model;
@@ -13,6 +14,7 @@ namespace EmguCV.Workbench.Algorithms
     /// https://docs.opencv.org/master/d4/d70/tutorial_hough_circle.html
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Algorithms.ImageAlgorithm" />
+    [Export(typeof(IImageAlgorithm))]
     public class HoughCircles : ImageAlgorithm
     {
         public override void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Linq;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
@@ -16,6 +17,7 @@ namespace EmguCV.Workbench.Algorithms
     /// https://docs.opencv.org/master/df/d0d/tutorial_find_contours.html
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Algorithms.ImageAlgorithm" />
+    [Export(typeof(IImageAlgorithm))]
     public class FindContours : ImageAlgorithm
     {
         public override void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Linq;
 using Emgu.CV;
 using Emgu.CV.Features2D;
@@ -19,6 +20,7 @@ namespace EmguCV.Workbench.Algorithms
     /// https://docs.opencv.org/master/d7/d66/tutorial_feature_detection.html
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Algorithms.ImageAlgorithm" />
+    [Export(typeof(IImageAlgorithm))]
     public class FeatureDetection : ImageAlgorithm
     {
         public override void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)

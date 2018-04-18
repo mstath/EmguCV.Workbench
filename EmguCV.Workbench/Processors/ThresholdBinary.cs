@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.Composition;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
@@ -10,6 +11,7 @@ namespace EmguCV.Workbench.Processors
     /// Inverted: threshold the image such that dst(x,y) = 0 if src(x,y) > threshold, otherwise max_value.
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
+    [Export(typeof(IImageProcessor))]
     public class ThresholdBinary : ImageProcessor
     {
         private byte _threshold = 127;

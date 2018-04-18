@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.Composition;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
@@ -10,6 +11,7 @@ namespace EmguCV.Workbench.Processors
     /// Performs horizontal or vertical flip on image.
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
+    [Export(typeof(IImageProcessor))]
     public class Flip : ImageProcessor
     {
         private FlipType _flipType = FlipType.None;

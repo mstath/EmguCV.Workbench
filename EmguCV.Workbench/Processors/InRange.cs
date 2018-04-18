@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Windows.Media;
 using Emgu.CV;
 using Emgu.CV.Structure;
@@ -11,6 +12,7 @@ namespace EmguCV.Workbench.Processors
     /// Checks that image elements lie between two scalars.
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
+    [Export(typeof(IImageProcessor))]
     public class InRange : ImageProcessor
     {
         private Color _lower = Colors.Black;

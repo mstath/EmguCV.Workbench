@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Windows.Media;
 using Emgu.CV;
 using Emgu.CV.Structure;
@@ -12,6 +13,7 @@ namespace EmguCV.Workbench.Processors
     /// Inverted: threshold the image such that dst(x,y) = 0 if src(x,y) > threshold, otherwise src(x,y).
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
+    [Export(typeof(IImageProcessor))]
     public class ThresholdToZero : ImageProcessor
     {
         private Color _threshold = Colors.Black;

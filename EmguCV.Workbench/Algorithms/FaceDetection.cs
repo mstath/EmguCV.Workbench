@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Drawing;
 using System.Windows.Media;
 using Emgu.CV;
@@ -16,6 +17,7 @@ namespace EmguCV.Workbench.Algorithms
     /// https://docs.opencv.org/master/db/d28/tutorial_cascade_classifier.html
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Algorithms.ImageAlgorithm" />
+    [Export(typeof(IImageAlgorithm))]
     public class FaceDetection : ImageAlgorithm
     {
         private readonly CascadeClassifier _face = new CascadeClassifier(@"Resources\haarcascade_frontalface_default.xml");

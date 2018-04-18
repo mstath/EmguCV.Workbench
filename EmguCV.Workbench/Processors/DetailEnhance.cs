@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.Composition;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using EmguCV.Workbench.Util;
@@ -10,6 +11,7 @@ namespace EmguCV.Workbench.Processors
     /// This filter enhances the details of a particular image.
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
+    [Export(typeof(IImageProcessor))]
     public class DetailEnhance : ImageProcessor
     {
         private float _sigmaS = 10f;

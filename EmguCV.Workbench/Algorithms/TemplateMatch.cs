@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Drawing;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
@@ -15,6 +16,7 @@ namespace EmguCV.Workbench.Algorithms
     /// https://docs.opencv.org/master/de/da9/tutorial_template_matching.html
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Algorithms.ImageTemplateAlgorithm" />
+    [Export(typeof(IImageAlgorithm))]
     public class TemplateMatch : ImageTemplateAlgorithm
     {
         public override void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)

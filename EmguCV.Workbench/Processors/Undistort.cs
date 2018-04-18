@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Emgu.CV;
@@ -15,6 +16,7 @@ namespace EmguCV.Workbench.Processors
     /// Camera Calibratin algorithm.
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
+    [Export(typeof(IImageProcessor))]
     public class Undistort : ImageProcessor
     {
         private Mat _cameraMatrix = new Mat(3, 3, DepthType.Cv64F, 1);

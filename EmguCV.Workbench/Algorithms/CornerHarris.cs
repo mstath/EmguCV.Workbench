@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Drawing;
 using Emgu.CV;
 using Emgu.CV.Structure;
@@ -14,6 +15,7 @@ namespace EmguCV.Workbench.Algorithms
     /// https://docs.opencv.org/master/d4/d7d/tutorial_harris_detector.html
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Algorithms.ImageAlgorithm" />
+    [Export(typeof(IImageAlgorithm))]
     public class CornerHarris : ImageAlgorithm
     {
         public override void Process(Image<Bgr, byte> image, out Image<Bgr, byte> annotatedImage, out List<object> data)

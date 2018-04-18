@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Windows.Media;
 
 namespace EmguCV.Workbench.Algorithms
@@ -7,6 +8,7 @@ namespace EmguCV.Workbench.Algorithms
     /// No algorithm (display raw image).
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Algorithms.ImageAlgorithm" />
+    [Export(typeof(IImageAlgorithm))]
     public class None : ImageAlgorithm
     {
         [Browsable(false)]

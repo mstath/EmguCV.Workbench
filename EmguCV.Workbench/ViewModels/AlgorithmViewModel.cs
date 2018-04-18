@@ -1,6 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -17,26 +18,18 @@ namespace EmguCV.Workbench.ViewModels
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
                 return;
 
-            // populate collection of instantiated image algorithms
-            // and set the initial selected algorithm to first (None)
-            Algorithms =
-                Assembly.GetExecutingAssembly()
-                    .GetTypes()
-                    .Where(t => typeof(IImageAlgorithm).IsAssignableFrom(t) && !t.IsAbstract)
-                    .Select(Activator.CreateInstance)
-                    .Select(i => i as IImageAlgorithm)
-                    .ToList()
-                    .OrderBy(a => a.GetType() == typeof(None) ? 0 : 1)
-                    .ThenBy(a => a.Name);
+            // import algorithms
+            var catalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
+            var container = new CompositionContainer(catalog);
+            container.SatisfyImportsOnce(this);
+
+            // reorder the list and set selected algorithm to first (None)
+            Algorithms = Algorithms.OrderBy(a => a.GetType() == typeof(None) ? 0 : 1).ThenBy(a => a.ToString()).ToList();
             SelectedAlgorithm = Algorithms.First();
         }
 
-        private IEnumerable<IImageAlgorithm> _algorithms;
-        public IEnumerable<IImageAlgorithm> Algorithms
-        {
-            get { return _algorithms; }
-            set { Set(ref _algorithms, value); }
-        }
+        [ImportMany]
+        public List<IImageAlgorithm> Algorithms { get; set; }
 
         private IImageAlgorithm _selectedAlgorithm;
         public IImageAlgorithm SelectedAlgorithm

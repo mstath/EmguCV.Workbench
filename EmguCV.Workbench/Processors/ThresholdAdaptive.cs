@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Windows.Media;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
@@ -15,6 +16,7 @@ namespace EmguCV.Workbench.Processors
     /// of blockSize x blockSize pixel neighborhood, subtracted by param1.
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
+    [Export(typeof(IImageProcessor))]
     public class ThresholdAdaptive : ImageProcessor
     {
         private Color _maxValue = Colors.White;

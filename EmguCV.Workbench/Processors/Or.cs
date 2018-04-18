@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Windows.Media;
 using Emgu.CV;
 using Emgu.CV.Structure;
@@ -11,6 +12,7 @@ namespace EmguCV.Workbench.Processors
     /// Perform an elementwise OR operation with some color.
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
+    [Export(typeof(IImageProcessor))]
     public class Or : ImageProcessor
     {
         private Color _color = Colors.Black;

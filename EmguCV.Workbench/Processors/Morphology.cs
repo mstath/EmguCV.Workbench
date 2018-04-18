@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Drawing;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
@@ -12,6 +13,7 @@ namespace EmguCV.Workbench.Processors
     /// Perform advanced morphological transformations using erosion and dilation as basic operations.
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
+    [Export(typeof(IImageProcessor))]
     public class Morphology : ImageProcessor
     {
         private MorphOp _morphOp = MorphOp.Erode;

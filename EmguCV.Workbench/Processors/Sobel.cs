@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.Composition;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using EmguCV.Workbench.Util;
@@ -14,6 +15,7 @@ namespace EmguCV.Workbench.Processors
     /// to calculate first x- or y- image derivative.
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
+    [Export(typeof(IImageProcessor))]
     public class Sobel : ImageProcessor
     {
         private SobelOrder _order;

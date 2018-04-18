@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Windows.Media;
 using Emgu.CV;
 using Emgu.CV.Structure;
@@ -11,6 +12,7 @@ namespace EmguCV.Workbench.Processors
     /// Find the elementwise minimum/maximum image.
     /// </summary>
     /// <seealso cref="EmguCV.Workbench.Processors.ImageProcessor" />
+    [Export(typeof(IImageProcessor))]
     public class MinMax : ImageProcessor
     {
         private Color _value = Colors.Black;

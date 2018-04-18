@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.ComponentModel.Composition.Hosting;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Windows;
 using Emgu.CV;
 using Emgu.CV.Structure;
@@ -15,8 +15,6 @@ namespace EmguCV.Workbench.ViewModels
 {
     public class ProcessorViewModel : ViewModelBase
     {
-        private readonly SortedList<string, Type> _processorTypes;
-
         public RelayCommand AddProcessorCommand { get; set; }
         public RelayCommand MoveProcessorUpCommand { get; set; }
         public RelayCommand MoveProcessorDownCommand { get; set; }
@@ -34,17 +32,14 @@ namespace EmguCV.Workbench.ViewModels
             MoveProcessorDownCommand = new RelayCommand(DoMoveProcessorDown);
             RemoveProcessorCommand = new RelayCommand(DoRemoveProcessor);
 
-            // create sorted list of names and types of image processors
-            var list = new SortedList<string, Type>();
-            foreach (var type in Assembly.GetExecutingAssembly().GetTypes().Where(t => typeof(IImageProcessor).IsAssignableFrom(t) && !t.IsAbstract))
-                list.Add(Regex.Replace(type.Name, @"(\B[A-Z])", " $1"), type);
-            _processorTypes = list;
+            // create a sorted list of processor types and
+            // set selected processor type to first
+            var catalog = new AssemblyCatalog(Assembly.GetExecutingAssembly());
+            ProcessorTypes = Helper.GetExportedTypes<IImageProcessor>(catalog).ToList();
+            ProcessorTypes.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.Ordinal));
+            SelectedProcessorType = ProcessorTypes.First();
 
-            // set collection of processor names,
-            // slected (first) name, and instatiate blank
-            // collection of processors
-            ProcessorNames = new List<string>(_processorTypes.Keys);
-            SelectedProcessorName = ProcessorNames.First();
+            // instantiate the processor collection
             Processors = new ObservableCollection<IImageProcessor>();
         }
 
@@ -63,10 +58,8 @@ namespace EmguCV.Workbench.ViewModels
         /// </summary>
         private void DoAddProcessor()
         {
-            // get selected processor type
-            var type = _processorTypes[_selecteProcessorName];
-            // create instance of type
-            var instance = Activator.CreateInstance(type);
+            // create instance of selected type
+            var instance = Activator.CreateInstance(_selectedProcessorType);
             // add instance to collection
             Processors.Add(instance as IImageProcessor);
         }
@@ -98,18 +91,13 @@ namespace EmguCV.Workbench.ViewModels
                 Processors.RemoveAt(_selectedProcessorIndex);
         }
 
-        private IEnumerable<string> _processorNames;
-        public IEnumerable<string> ProcessorNames
-        {
-            get { return _processorNames; }
-            set { Set(ref _processorNames, value); }
-        }
+        public List<Type> ProcessorTypes { get; }
 
-        private string _selecteProcessorName;
-        public string SelectedProcessorName
+        private Type _selectedProcessorType;
+        public Type SelectedProcessorType
         {
-            get { return _selecteProcessorName; }
-            set { Set(ref _selecteProcessorName, value); }
+            get { return _selectedProcessorType; }
+            set { Set(ref _selectedProcessorType, value); }
         }
 
         public ObservableCollection<IImageProcessor> Processors { get; }
